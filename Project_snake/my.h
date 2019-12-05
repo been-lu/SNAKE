@@ -89,4 +89,4 @@ IMAGE headw, heada, heads, headd, snake, map;
 IMAGE food0, food1, food2, food3;
 
 //≈≈––∞Ò
-//FILE *list = fopen("E://SnakeImage//list.txt", "r+");
+FILE *list = fopen("E://SnakeImage//list.txt", "r+");

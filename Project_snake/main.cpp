@@ -115,6 +115,8 @@ void createfood(fd*food)
 	p = NULL;
 	if (flag == 1)
 		createfood(food);
+	//检查食物会不会重合
+	//就不检查了
 }
 
 //画图
@@ -189,56 +191,64 @@ void keyboard()
 //检查蛇头接触到什么
 void check()
 {
-	//吃到食物
+	//吃到食物 并重定义食物
 	if(head->position_x == fd1->position_x && head->position_y == fd1->position_y)
 		switch (fd1->type)
 		{
-		case 0:join(); score = score + 5; break;//基础型
-		case 1:dele(); dele(); break;//地雷
+		case 0:join(); score = score + 5; 
+			createfood(fd1);break;//基础型
+		case 1:dele(); dele(); 
+			createfood(fd1); break;//地雷
 		case 2:dele(); score = score - 5; speed = speed - 10; 
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
-			} break;//毒草
-		case 3:break;//未定
+			} createfood(fd1); break;//毒草
+		case 3:createfood(fd1); break;//未定
 		}
 	else
 		if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
 			switch (fd2->type)
-				{					case 0:join(); score = score + 5; break;
-				case 1:dele(); dele(); break;
+				{					
+				case 0:join(); score = score + 5; createfood(fd2); break;
+				case 1:dele(); dele(); 
+					createfood(fd2); break;
 				case 2:dele(); score = score - 5; speed = speed - 10;
 					if (speed == 0)
 					{
 						speed = 10; score = score - 10;
-					}break;
+					}createfood(fd2); break;
 				case 3:break;//未定
 				}
 		else
 			if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
 				switch (fd3->type)
 				{
-				case 0:join(); score = score + 5; break;
-				case 1:dele(); dele(); break;
+				case 0:join(); score = score + 5; 
+					createfood(fd3); break;
+				case 1:dele(); dele(); 
+					createfood(fd3); break;
 				case 2:dele(); score = score - 5; speed = speed - 10;
 					if (speed == 0)
 					{
 						speed = 10; score = score - 10;
-					} break;
-				case 3:break;//未定
+					}createfood(fd3); break;
+				case 3:createfood(fd3); break;//未定
 				}
 			else
 				if (head->position_x == fd4->position_x && head->position_y == fd4->position_y)
 					switch (fd4->type)
 					{
-					case 0:join(); score = score + 5; break;
-					case 1:dele(); dele(); break;
+					case 0:join(); score = score + 5;
+						createfood(fd4); break;
+					case 1:dele(); dele(); 
+						createfood(fd4); break;
 					case 2:dele(); score = score - 5; speed = speed - 10;
 						if (speed == 0)
 						{
 							speed = 10; score = score - 10;
-						} break;
-					case 3:break;//未定
+						} createfood(fd4); break;
+					case 3:createfood(fd4); break;//未定
 					}
 	if (head == tail)
 		gameover();
@@ -285,5 +295,15 @@ void run()
 //游戏结束
 void gameover()
 {
+	//空间释放
+	p = head->next;
+	while (p)
+	{
+		free(p->pre);
+		p = p->next;
+	}
+	free(tail);
+
+	//结局
 
 }
