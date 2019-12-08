@@ -88,5 +88,3 @@ IMAGE headw, heada, heads, headd, snake, map;
 //4种食物
 IMAGE food0, food1, food2, food3;
 
-//排行榜
-FILE *list = fopen("E://SnakeImage//list.txt", "r+");

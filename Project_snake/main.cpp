@@ -8,13 +8,21 @@ void drawsnake();
 void draw();
 void keyboard();
 void gameover();
+void run();
 
 int main()
 {
+	//排行榜开文件
+	FILE* list;
+	errno_t d;
+	d= fopen_s(&list,"E://SnakeImage//list.txt", "r+");
+
 	//开始游戏
 	
 	start();
 
+	//关文件+50
+	fclose(list);
 	system("pause");
 	return 0;
 }
@@ -79,8 +87,8 @@ void start()
 	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load2.png"), 800, 600);
 	Sleep(1700);
-	
 	menu();
+	run();
 }
 
 //开始选择菜单
@@ -91,10 +99,11 @@ void menu()
 	putimage(0, 0, &menu0);
 	for (;;)
 	{
-
+		
 	}
 }
 
+//生成食物
 void createfood(fd*food)
 {
 	food->position_x = rand() % (MAP_WIDTH + 1);
@@ -269,6 +278,9 @@ void check()
 		}
 		p = p->next;
 	}
+	
+	//接着跑
+	run();
 }
 
 //让蛇跑起来
@@ -289,6 +301,7 @@ void run()
 	}
 	p = NULL;
 	draw();
+	check();
 }
 
 
