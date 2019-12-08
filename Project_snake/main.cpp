@@ -9,6 +9,7 @@ void draw();
 void keyboard();
 void gameover();
 void run();
+void exit();
 
 int main()
 {
@@ -18,7 +19,6 @@ int main()
 	d= fopen_s(&list,"E://SnakeImage//list.txt", "r+");
 
 	//开始游戏
-	
 	start();
 
 	//关文件+50
@@ -27,7 +27,7 @@ int main()
 	return 0;
 }
 
-//开始载入图片
+//开始
 void start()
 {
 
@@ -45,7 +45,8 @@ void start()
 		loadimage(&food2, _T("E://SnakeImage//food2.png"), 20, 20);
 		loadimage(&food3, _T("E://SnakeImage//food3.png"), 20, 20);
 		loadimage(&map, _T("E://SnakeImage//map.png"), 800, 600);
-
+		loadimage(&stop, _T("E://SnakeImage//stop.png"), 800, 600);
+		loadimage(&menu0, _T("E://SnakeImage//menu0.png"), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -57,12 +58,12 @@ void start()
 		head->next = (sn*)malloc(sizeof(sn));
 		p = head->next;
 		p->position_x = 7;
-		p->position_y = 7;
+		p->position_y = 6;
 		p->pre = head;
 		p->next = (sn*)malloc(sizeof(sn));
 		tail = p->next;
 		tail->position_x = 7;
-		tail->position_y = 7;
+		tail->position_y = 5;
 		tail->pre = p;
 		tail->next = NULL;
 		p = NULL;
@@ -87,20 +88,32 @@ void start()
 	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load2.png"), 800, 600);
 	Sleep(1700);
+	
+	//进入开始界面
 	menu();
-	run();
 }
 
 //开始选择菜单
 void menu()
 {
-	IMAGE menu0;
-	loadimage(&menu0, _T("E://SnakeImage//menu0.png"));
 	putimage(0, 0, &menu0);
-	for (;;)
+	char key;
+	while(1)
 	{
-		
+		if (_kbhit())
+		{
+			//fflush(stdin);
+			key = _getch();
+			break;
+		}
 	}
+	switch (key)
+	{
+	case '1':draw(); cleardevice(); break;
+	case '2':cleardevice(); break;//未完
+	case '3':cleardevice(); exit(); break;
+	}		
+	
 }
 
 //生成食物
@@ -117,7 +130,6 @@ void createfood(fd*food)
 		if (food->position_x == p->position_x && food->position_y == p->position_y)
 		{
 			flag = 1;
-			break;
 		}
 		p = p->next;
 	}
@@ -133,68 +145,63 @@ void drawfood()
 {
 	switch (fd1->type)
 	{
-	case 0:putimage((fd1->position_x * 10), (fd1->position_y) * 10, &food0); break;
-	case 1:putimage((fd1->position_x * 10), (fd1->position_y) * 10, &food1); break;
-	case 2:putimage((fd1->position_x * 10), (fd1->position_y) * 10, &food2); break;
-	case 3:putimage((fd1->position_x * 10), (fd1->position_y) * 10, &food3); break;
+	case 0:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food0); break;
+	case 1:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food1); break;
+	case 2:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food2); break;
+	case 3:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food3); break;
 	}
 	switch (fd2->type)
 	{
-	case 0:putimage((fd2->position_x * 10), (fd2->position_y) * 10, &food0); break;
-	case 1:putimage((fd2->position_x * 10), (fd2->position_y) * 10, &food1); break;
-	case 2:putimage((fd2->position_x * 10), (fd2->position_y) * 10, &food2); break;
-	case 3:putimage((fd2->position_x * 10), (fd2->position_y) * 10, &food3); break;
+	case 0:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food0); break;
+	case 1:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food1); break;
+	case 2:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food2); break;
+	case 3:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food3); break;
 	}
 	switch (fd3->type)
 	{
-	case 0:putimage((fd3->position_x * 10), (fd3->position_y) * 10, &food0); break;
-	case 1:putimage((fd3->position_x * 10), (fd3->position_y) * 10, &food1); break;
-	case 2:putimage((fd3->position_x * 10), (fd3->position_y) * 10, &food2); break;
-	case 3:putimage((fd3->position_x * 10), (fd3->position_y) * 10, &food3); break;
+	case 0:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food0); break;
+	case 1:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food1); break;
+	case 2:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food2); break;
+	case 3:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food3); break;
 	}
 	switch (fd4->type)
 	{
-	case 0:putimage((fd4->position_x * 10), (fd4->position_y) * 10, &food0); break;
-	case 1:putimage((fd4->position_x * 10), (fd4->position_y) * 10, &food1); break;
-	case 2:putimage((fd4->position_x * 10), (fd4->position_y) * 10, &food2); break;
-	case 3:putimage((fd4->position_x * 10), (fd4->position_y) * 10, &food3); break;
+	case 0:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food0); break;
+	case 1:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food1); break;
+	case 2:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food2); break;
+	case 3:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food3); break;
 	}
 }
 void drawsnake()
 {
 	switch (go_position)
 	{
-	case 'w':putimage((head->position_x) * 10, (head->position_y) * 10, &headw); break;
-	case 'a':putimage((head->position_x) * 10, (head->position_y) * 10, &heada); break;
-	case 's':putimage((head->position_x) * 10, (head->position_y) * 10, &heads); break;
-	case 'd':putimage((head->position_x) * 10, (head->position_y) * 10, &headd); break;
+	case 'w':putimage((head->position_x) * 20, (head->position_y) * 20, &headw); break;
+	case 'a':putimage((head->position_x) * 20, (head->position_y) * 20, &heada); break;
+	case 's':putimage((head->position_x) * 20, (head->position_y) * 20, &heads); break;
+	case 'd':putimage((head->position_x) * 20, (head->position_y) * 20, &headd); break;
 	}
 	p = head->next;
 	while (p)
 	{
-		putimage((p->position_x) * 10, (p->position_y) * 10, &snake);
+		putimage((p->position_x) * 20, (p->position_y) * 20, &snake);
 		p = p->next;
 	}
-	p = NULL;
 }
 void draw()
 {
 	putimage(0, 0, &map);
 	drawfood();
 	drawsnake();
+	run();
 	Sleep(speed);
 }
 
 //暂停
 void pause()
 {
-
-}
-
-//键盘读取
-void keyboard()
-{
-
+	putimage(0, 0, &stop);
+	system("pause");
 }
 
 //检查蛇头接触到什么
@@ -279,13 +286,12 @@ void check()
 		p = p->next;
 	}
 	
-	//接着跑
-	run();
 }
 
 //让蛇跑起来
 void run()
 {
+	keyboard();
 	switch (go_position)
 	{
 	case'w':case'W':head->position_y--; break;
@@ -298,6 +304,7 @@ void run()
 	{
 		p->position_x = p->pre->position_x;
 		p->position_y = p->pre->position_y;
+		p = p->next;
 	}
 	p = NULL;
 	draw();
@@ -319,4 +326,25 @@ void gameover()
 
 	//结局
 
+}
+
+//键盘
+void keyboard()
+{
+	if (_kbhit)
+	{
+		fflush(stdin);
+		int key;
+		key = _getch();
+		if (key == 'p' || key == 'P')
+			pause();
+		else
+			go_position = key;
+	}
+}
+
+//退出游戏
+void exit()
+{
+	Sleep(10);
 }

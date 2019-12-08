@@ -1,2 +1,2 @@
 ﻿  main.cpp
-  Project7.vcxproj -> E:\1st_repository\Project_snake\Debug\Project snake.exe
+E:\1st_repository\Project_snake\main.cpp(333,6): warning C4551: 缺少参数列表的函数调用

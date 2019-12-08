@@ -60,7 +60,7 @@ typedef struct list
 	int score;
 }lt;
 
-//移动光标
+//移动光标(现已废弃)
 void gotoxy(int x, int y)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -81,10 +81,10 @@ fd* fd4 = (fd*)malloc(sizeof(fd));
 int speed=150;//sleep time(ms)
 int score = 0;//分数
 
-int go_position = 'd';//初始前进方向
+int go_position = 's';//初始前进方向
 
 //蛇头4个方向及蛇身图片
-IMAGE headw, heada, heads, headd, snake, map;
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0;
 //4种食物
 IMAGE food0, food1, food2, food3;
 
