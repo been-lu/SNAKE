@@ -348,13 +348,12 @@ void run()
 		gameover();
 		return;
 	}
-	p = tail;
-	while (p!=head)
+	for(p=tail;p!=head;p=p->pre)
 	{
 		p->position_x = p->pre->position_x;
 		p->position_y = p->pre->position_y;
-		p = p->pre;
 	}
+	p = NULL;
 	switch (go_position)
 	{
 	case'w':case'W':head->position_y--; break;
@@ -363,6 +362,7 @@ void run()
 	case'd':case'D':head->position_x++; break;
 	}
 	p = NULL;
+	fd1->type = 0;
 	draw();
 	Sleep(speed);
 	run();
@@ -436,7 +436,7 @@ void exit()
 void restart()
 {
 	score = 0;
-	//链表蛇初始化
+	//初始化
 	{
 		head = (sn*)malloc(sizeof(sn));
 		head->pre = NULL;
@@ -455,6 +455,12 @@ void restart()
 		tail->next = NULL;
 		p = NULL;
 		//初始长度为3
+		createfood(fd1);
+		createfood(fd2);
+		createfood(fd3);
+		createfood(fd4);
+		fd1->type = 0;
+		fd3->type = 0;
 	}
 
 	//跑起来
