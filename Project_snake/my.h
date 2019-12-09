@@ -78,8 +78,9 @@ fd* fd3 = (fd*)malloc(sizeof(fd));
 fd* fd4 = (fd*)malloc(sizeof(fd));
 
 
-int speed=150;//sleep time(ms)
+int speed = 150;//sleep time(ms)
 int score = 0;//分数
+int choose = 0;//界面选择用
 
 int go_position = 's';//初始前进方向
 

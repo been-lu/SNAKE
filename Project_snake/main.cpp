@@ -10,6 +10,8 @@ void keyboard();
 void gameover();
 void run();
 void exit();
+int check();
+void restart();
 
 int main()
 {
@@ -23,7 +25,10 @@ int main()
 
 	//关文件+50
 	fclose(list);
-	system("pause");
+
+	closegraph();
+
+	//system("pause");
 	return 0;
 }
 
@@ -83,7 +88,7 @@ void start()
 
 	//载入开始图片
 	loadimage(NULL, _T("E://SnakeImage//load0.jpg"), 800, 600);
-	Sleep(700);
+	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load1.jpg"), 800, 600);
 	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load2.png"), 800, 600);
@@ -97,23 +102,21 @@ void start()
 void menu()
 {
 	putimage(0, 0, &menu0);
-	char key;
 	while(1)
 	{
 		if (_kbhit())
 		{
-			//fflush(stdin);
-			key = _getch();
+			choose = _getch();
 			break;
 		}
 	}
-	switch (key)
+	Sleep(100);
+	switch (choose)
 	{
-	case '1':draw(); cleardevice(); break;
-	case '2':cleardevice(); break;//未完
-	case '3':cleardevice(); exit(); break;
+	case 49:draw(); run();  break;
+	case 50:break;//未完
+	case 51:exit(); break;
 	}		
-	
 }
 
 //生成食物
@@ -193,8 +196,6 @@ void draw()
 	putimage(0, 0, &map);
 	drawfood();
 	drawsnake();
-	run();
-	Sleep(speed);
 }
 
 //暂停
@@ -205,8 +206,9 @@ void pause()
 }
 
 //检查蛇头接触到什么
-void check()
+int check()
 {
+	int flag = 1;//1是正常，0是死亡
 	//吃到食物 并重定义食物
 	if(head->position_x == fd1->position_x && head->position_y == fd1->position_y)
 		switch (fd1->type)
@@ -267,38 +269,37 @@ void check()
 					case 3:createfood(fd4); break;//未定
 					}
 	if (head == tail)
-		gameover();
-	
+	{
+		flag = 0;
+		return flag;
+	}
 	//撞墙
 	if (head->position_x < 0 || head->position_x > 40 || head->position_y < 0 || head->position_y > 30)
-		gameover();
-	
+	{
+		flag = 0;
+		return flag;
+	}
 	//吃到自己
 	p = head->next;
 	while (p)
 	{
 		if (head->position_x == p->position_x && head->position_y == p->position_y)
 		{
-			gameover();
+			flag = 0;
 			break;
 			p = NULL;
 		}
 		p = p->next;
 	}
-	
+	return flag;
 }
 
 //让蛇跑起来
 void run()
 {
 	keyboard();
-	switch (go_position)
-	{
-	case'w':case'W':head->position_y--; break;
-	case'a':case'A':head->position_x--; break;
-	case's':case'S':head->position_y++; break;
-	case'd':case'D':head->position_x++; break;
-	}
+	if (check() == 0)
+		gameover();
 	p = head->next;
 	while (p)
 	{
@@ -306,9 +307,17 @@ void run()
 		p->position_y = p->pre->position_y;
 		p = p->next;
 	}
+	switch (go_position)
+	{
+	case'w':case'W':head->position_y--; break;
+	case'a':case'A':head->position_x--; break;
+	case's':case'S':head->position_y++; break;
+	case'd':case'D':head->position_x++; break;
+	}
 	p = NULL;
 	draw();
-	check();
+	Sleep(speed);
+	run();
 }
 
 
@@ -347,4 +356,35 @@ void keyboard()
 void exit()
 {
 	Sleep(10);
+}
+
+//重新开始
+void restart()
+{
+	score = 0;
+	//链表蛇初始化
+	{
+		head = (sn*)malloc(sizeof(sn));
+		head->pre = NULL;
+		head->position_x = 7;
+		head->position_y = 7;
+		head->next = (sn*)malloc(sizeof(sn));
+		p = head->next;
+		p->position_x = 7;
+		p->position_y = 6;
+		p->pre = head;
+		p->next = (sn*)malloc(sizeof(sn));
+		tail = p->next;
+		tail->position_x = 7;
+		tail->position_y = 5;
+		tail->pre = p;
+		tail->next = NULL;
+		p = NULL;
+		//初始长度为3
+	}
+
+	//跑起来
+
+
+
 }
