@@ -12,6 +12,9 @@ void run();
 void exit();
 int check();
 void restart();
+//应该有个故事
+void storytell();
+void endtell();
 
 int main()
 {
@@ -28,7 +31,6 @@ int main()
 
 	closegraph();
 
-	//system("pause");
 	return 0;
 }
 
@@ -78,6 +80,10 @@ void start()
 	//随机数种子及食物初始化
 	{
 	srand((unsigned)time(NULL));
+	fd1->position_x = 0; fd1->position_y = 0;
+	fd2->position_x = 0; fd2->position_y = 0;
+	fd3->position_x = 0; fd3->position_y = 0;
+	fd4->position_x = 0; fd4->position_y = 0;
 	createfood(fd1);
 	createfood(fd2);
 	createfood(fd3);
@@ -141,6 +147,45 @@ void createfood(fd*food)
 		createfood(food);
 	//检查食物会不会重合
 	//就不检查了
+	//还是要检查的，小概率事件还是会发生的
+	{
+		if (food == fd1)
+			if (food->position_x == fd2->position_x && food->position_y == fd2->position_y)
+				createfood(food);
+		if (food == fd1)
+			if (food->position_x == fd3->position_x && food->position_y == fd3->position_y)
+				createfood(food);
+		if (food == fd1)
+			if (food->position_x == fd4->position_x && food->position_y == fd4->position_y)
+				createfood(food);
+		if (food == fd2)
+			if (food->position_x == fd1->position_x && food->position_y == fd1->position_y)
+				createfood(food);
+		if (food == fd2)
+			if (food->position_x == fd3->position_x && food->position_y == fd3->position_y)
+				createfood(food);
+		if (food == fd2)
+			if (food->position_x == fd4->position_x && food->position_y == fd4->position_y)
+				createfood(food);
+		if (food == fd3)
+			if (food->position_x == fd1->position_x && food->position_y == fd1->position_y)
+				createfood(food);
+		if (food == fd3)
+			if (food->position_x == fd2->position_x && food->position_y == fd2->position_y)
+				createfood(food);
+		if (food == fd3)
+			if (food->position_x == fd4->position_x && food->position_y == fd4->position_y)
+				createfood(food);
+		if (food == fd4)
+			if (food->position_x == fd1->position_x && food->position_y == fd1->position_y)
+				createfood(food);
+		if (food == fd4)
+			if (food->position_x == fd2->position_x && food->position_y == fd2->position_y)
+				createfood(food);
+		if (food == fd4)
+			if (food->position_x == fd3->position_x && food->position_y == fd3->position_y)
+				createfood(food);
+	}
 }
 
 //画图
@@ -177,18 +222,18 @@ void drawfood()
 }
 void drawsnake()
 {
+	//根据方向画蛇头（虽然看不出来）
 	switch (go_position)
 	{
-	case 'w':putimage((head->position_x) * 20, (head->position_y) * 20, &headw); break;
-	case 'a':putimage((head->position_x) * 20, (head->position_y) * 20, &heada); break;
-	case 's':putimage((head->position_x) * 20, (head->position_y) * 20, &heads); break;
-	case 'd':putimage((head->position_x) * 20, (head->position_y) * 20, &headd); break;
+	case'W':case 'w':putimage((head->position_x) * 20, (head->position_y) * 20, &headw); break;
+	case'A':case 'a':putimage((head->position_x) * 20, (head->position_y) * 20, &heada); break;
+	case'S':case 's':putimage((head->position_x) * 20, (head->position_y) * 20, &heads); break;
+	case'D':case 'd':putimage((head->position_x) * 20, (head->position_y) * 20, &headd); break;
 	}
-	p = head->next;
-	while (p)
+	//画蛇身
+	for(p = head->next;p!=NULL;p=p->next)
 	{
 		putimage((p->position_x) * 20, (p->position_y) * 20, &snake);
-		p = p->next;
 	}
 }
 void draw()
@@ -209,13 +254,13 @@ void pause()
 int check()
 {
 	int flag = 1;//1是正常，0是死亡
-	//吃到食物 并重定义食物
+	//吃到食物 并重生成食物
 	if(head->position_x == fd1->position_x && head->position_y == fd1->position_y)
 		switch (fd1->type)
 		{
 		case 0:join(); score = score + 5; 
 			createfood(fd1);break;//基础型
-		case 1:dele(); dele(); 
+		case 1:dele(); score = score + 2;
 			createfood(fd1); break;//地雷
 		case 2:dele(); score = score - 5; speed = speed - 10; 
 			if (speed == 0)
@@ -229,7 +274,7 @@ int check()
 			switch (fd2->type)
 				{					
 				case 0:join(); score = score + 5; createfood(fd2); break;
-				case 1:dele(); dele(); 
+				case 1:dele(); score = score + 2;
 					createfood(fd2); break;
 				case 2:dele(); score = score - 5; speed = speed - 10;
 					if (speed == 0)
@@ -244,7 +289,7 @@ int check()
 				{
 				case 0:join(); score = score + 5; 
 					createfood(fd3); break;
-				case 1:dele(); dele(); 
+				case 1:dele(); score = score + 2;
 					createfood(fd3); break;
 				case 2:dele(); score = score - 5; speed = speed - 10;
 					if (speed == 0)
@@ -259,7 +304,7 @@ int check()
 					{
 					case 0:join(); score = score + 5;
 						createfood(fd4); break;
-					case 1:dele(); dele(); 
+					case 1:dele(); score = score + 2;
 						createfood(fd4); break;
 					case 2:dele(); score = score - 5; speed = speed - 10;
 						if (speed == 0)
@@ -299,13 +344,16 @@ void run()
 {
 	keyboard();
 	if (check() == 0)
+	{
 		gameover();
-	p = head->next;
-	while (p)
+		return;
+	}
+	p = tail;
+	while (p!=head)
 	{
 		p->position_x = p->pre->position_x;
 		p->position_y = p->pre->position_y;
-		p = p->next;
+		p = p->pre;
 	}
 	switch (go_position)
 	{
@@ -335,20 +383,46 @@ void gameover()
 
 	//结局
 
+
 }
 
 //键盘
 void keyboard()
 {
-	if (_kbhit)
+	
+	if (_kbhit()==1)
 	{
 		fflush(stdin);
-		int key;
+		int key,death=0;
 		key = _getch();
 		if (key == 'p' || key == 'P')
 			pause();
 		else
-			go_position = key;
+		{
+			//还要防蛇吃自己
+			if ((key == 'w' || key == 'W') && (go_position == 's' || go_position == 'S'))
+			{
+				go_position = 's';
+				death = 1;
+			}
+			if ((key == 's' || key == 'S') && (go_position == 'w' || go_position == 'W'))
+			{
+				go_position = 'w';
+				death = 1;
+			}
+			if ((key == 'a' || key == 'A') && (go_position == 'D' || go_position == 'd'))
+			{
+				go_position = 'd';
+				death = 1;
+			}
+			if ((key == 'd' || key == 'D') && (go_position == 'a' || go_position == 'A'))
+			{
+				go_position = 'a';
+				death = 1;
+			}
+			if (death == 0)
+				go_position = key;
+		}
 	}
 }
 
@@ -384,7 +458,17 @@ void restart()
 	}
 
 	//跑起来
+	draw();
+	run();
 
+}
 
+void  storytell()
+{
+
+}
+
+void endtell()
+{
 
 }

@@ -60,22 +60,13 @@ typedef struct list
 	int score;
 }lt;
 
-//移动光标(现已废弃)
-void gotoxy(int x, int y)
-{
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord;
-	coord.X = x;
-	coord.Y = y;
-	SetConsoleCursorPosition(handle, coord);
-}
-
 
 //4个食物开局结为基础食物
 fd* fd1 = (fd*)malloc(sizeof(fd));
 fd* fd2 = (fd*)malloc(sizeof(fd));
 fd* fd3 = (fd*)malloc(sizeof(fd));
 fd* fd4 = (fd*)malloc(sizeof(fd));
+
 
 
 int speed = 150;//sleep time(ms)
@@ -88,4 +79,7 @@ int go_position = 's';//初始前进方向
 IMAGE headw, heada, heads, headd, snake, map, stop, menu0;
 //4种食物
 IMAGE food0, food1, food2, food3;
+//剧情
+IMAGE story0, story1, story2, story3, story4, story5, story6, story7;
+IMAGE storyend0, storyend1, scores, menu1;
 

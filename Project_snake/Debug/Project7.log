@@ -1,4 +1,2 @@
 ﻿  main.cpp
-E:\1st_repository\Project_snake\main.cpp(343,6): warning C4551: 缺少参数列表的函数调用
-E:\1st_repository\Project_snake\main.cpp(321): warning C4717: “run”: 如递归所有控件路径，函数将导致运行时堆栈溢出
   Project7.vcxproj -> E:\1st_repository\Project_snake\Debug\Project snake.exe
