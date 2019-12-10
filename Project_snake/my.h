@@ -22,6 +22,28 @@ sn* head;//蛇头
 sn* tail;//蛇尾
 sn* p = NULL;//用于遍历
 
+//加入节点
+void join()
+{
+	tail->next = (sn*)malloc(sizeof(sn));
+	p = tail->next;
+	p->pre = tail;
+	tail = p;
+	p->next = NULL;
+	tail = p;
+	p = NULL;
+}
+
+//删除尾节点
+void dele()
+{
+	p = (tail->pre);
+	free(tail);
+	tail = p;
+	tail->next = NULL;
+	p = NULL;
+}
+
 //食物结构体
 typedef struct
 {
@@ -50,6 +72,7 @@ fd* fd4 = (fd*)malloc(sizeof(fd));
 int speed = 150;//sleep time(ms)
 int score = 0;//分数
 int choose = 0;//界面选择用
+char c[3];
 
 int go_position = 's';//初始前进方向
 
@@ -59,5 +82,5 @@ IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude;
 IMAGE food0, food1, food2, food3;
 //剧情
 IMAGE story0, story1, story2, story3, story4, story5, story6, story7;
-IMAGE storyend0, storyend1, scores, menu1;
+IMAGE storyend0, storyend1, storyend2, storyend3, scores, menu1;
 

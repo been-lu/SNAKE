@@ -1,7 +1,5 @@
 #include"my.h"
 
-void join();
-void dele();
 void start();
 void menu();
 void createfood(fd* food);
@@ -17,6 +15,10 @@ void restart();
 //应该有个故事
 void storytell();
 void endtell();
+//排行榜读写
+void listwrite();
+void listread();
+
 
 int main()
 {
@@ -37,25 +39,6 @@ int main()
 }
 
 
-//加入节点
-void join()
-{
-	p = (sn*)malloc(sizeof(sn));
-	p->pre = tail;
-	p->next = NULL;
-	tail = p;
-	p = NULL;
-}
-
-//删除尾节点
-void dele()
-{
-	p = (tail->pre);
-	free(tail);
-	tail = p;
-	tail->next = NULL;
-	p = NULL;
-}
 
 //开始
 void start()
@@ -131,7 +114,10 @@ void menu()
 		if (_kbhit())
 		{
 			choose = _getch();
-			break;
+			if (choose != 49 && choose != 50 && choose != 51)
+				continue;
+			else
+				break;
 		}
 	}
 	Sleep(100);
@@ -152,10 +138,12 @@ void menud()
 		if (_kbhit())
 		{
 			choose = _getch();
-			break;
+			if (choose != 49 && choose != 50 && choose != 51)
+				continue;
+			else
+				break;
 		}
 	}
-	Sleep(100);
 	cleardevice();
 	switch (choose)
 	{
@@ -168,9 +156,11 @@ void menud()
 //生成食物
 void createfood(fd*food)
 {
-	food->position_x = rand() % (MAP_WIDTH + 1);
-	food->position_y = rand() % (MAP_LENGTH + 1);
-	food->type = rand() % (4);
+	food->position_x = rand() % (MAP_WIDTH );
+	food->position_y = rand() % (MAP_LENGTH );
+	food->type = rand() % (7);
+	if (food->type >= 4)
+		food->type = 0;
 	//检查食物在不在蛇身上
 	int flag = 0;
 	p = head;
@@ -275,12 +265,20 @@ void drawsnake()
 	{
 		putimage((p->position_x) * 20, (p->position_y) * 20, &snake);
 	}
+	//putimage((tail->position_x) * 20, (tail->position_y) * 20, &snake);
+	//putimage((tail->pre->position_x) * 20, (tail->pre->position_y) * 20, &snake);
 }
 void draw()
 {
+	cleardevice();
 	putimage(0, 0, &map);
 	drawfood();
 	drawsnake();
+	outtextxy(0, 0,"Score:");
+	c[2] = score % 10 + 48;
+	c[1] = (score / 10) % 10 + 48;
+	c[0] = (score / 100) % 10 + 48;
+	outtextxy(50, 0, c);
 }
 
 //暂停
@@ -300,7 +298,7 @@ int check()
 	{
 		switch (fd1->type)
 		{
-		case 0:join(); score = score + 5;
+		case 0:join(); score = score + 4;
 			createfood(fd1); break;//基础型
 		case 1:dele(); score = score + 2; speed = speed - 5;
 			if (speed == 0)
@@ -310,14 +308,15 @@ int check()
 			createfood(fd1); break;//地雷
 		case 2:dele(); score = score - 5;
 			 createfood(fd1); break;//毒草
-		case 3:score = score + 2; createfood(fd1); break;//用于刷新食物
+		case 3:score = score + 2; 
+			createfood(fd1); break;//用于刷新食物
 		}
 	}
 	if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
 	{
 		switch (fd2->type)
 		{
-		case 0:join(); score = score + 5; 
+		case 0:join(); score = score + 4; 
 			createfood(fd2); break;
 		case 1:dele(); score = score + 2; speed = speed - 5;
 			if (speed == 0)
@@ -327,14 +326,15 @@ int check()
 			createfood(fd2); break;
 		case 2:dele(); score = score - 5; 
 			createfood(fd2); break;
-		case 3:score = score + 2; createfood(fd2); break;//未定
+		case 3:score = score + 2;
+			createfood(fd2); break;//未定
 		}
 	}
 	if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
 	{
 		switch (fd3->type)
 		{
-		case 0:join(); score = score + 5;
+		case 0:join(); score = score + 4;
 			createfood(fd3); break;
 		case 1:dele(); score = score + 2; speed = speed - 10;
 			if (speed == 0)
@@ -351,7 +351,7 @@ int check()
 	{
 		switch (fd4->type)
 		{
-		case 0:join(); score = score + 5;
+		case 0:join(); score = score + 4;
 			createfood(fd4); break;
 		case 1:dele(); score = score + 2; speed = speed - 10;
 			if (speed == 0)
@@ -364,6 +364,7 @@ int check()
 		case 3:score = score + 2; createfood(fd4); break;//未定
 		}
 	}
+	
 	if (head == tail)
 	{
 		flag = 0;
@@ -391,7 +392,8 @@ int check()
 }
 
 //让蛇跑起来
-void run()
+void run
+()
 {
 	keyboard();
 	if (check() == 0)
@@ -413,6 +415,7 @@ void run()
 	}
 	p = NULL;
 	draw();
+
 	Sleep(speed);
 	run();
 }
@@ -488,6 +491,8 @@ void exit()
 void restart()
 {
 	score = 0;
+	speed = 150;
+	go_position = 's';
 	//初始化
 	{
 		head = (sn*)malloc(sizeof(sn));
@@ -527,6 +532,16 @@ void  storytell()
 }
 
 void endtell()
+{
+
+}
+
+void writelist()
+{
+
+}
+
+void readlist()
 {
 
 }
