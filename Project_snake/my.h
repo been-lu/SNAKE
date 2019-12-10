@@ -22,28 +22,6 @@ sn* head;//蛇头
 sn* tail;//蛇尾
 sn* p = NULL;//用于遍历
 
-//加入节点
-void join()
-{
-	p = (sn*)malloc(sizeof(sn));
-	p->pre = tail;
-	p->next = NULL;
-	p->position_x = tail->position_x;
-	p->position_y = tail->position_y;
-	tail = p;
-	p = NULL;
-}
-
-//删除尾节点
-void dele()
-{
-	p = (tail->pre);
-	free(tail);
-	tail = p;
-	tail->next = NULL;
-	p = NULL;
-}
-
 //食物结构体
 typedef struct
 {
@@ -76,7 +54,7 @@ int choose = 0;//界面选择用
 int go_position = 's';//初始前进方向
 
 //蛇头4个方向及蛇身图片
-IMAGE headw, heada, heads, headd, snake, map, stop, menu0;
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情

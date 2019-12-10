@@ -1,5 +1,7 @@
 #include"my.h"
 
+void join();
+void dele();
 void start();
 void menu();
 void createfood(fd* food);
@@ -34,6 +36,27 @@ int main()
 	return 0;
 }
 
+
+//加入节点
+void join()
+{
+	p = (sn*)malloc(sizeof(sn));
+	p->pre = tail;
+	p->next = NULL;
+	tail = p;
+	p = NULL;
+}
+
+//删除尾节点
+void dele()
+{
+	p = (tail->pre);
+	free(tail);
+	tail = p;
+	tail->next = NULL;
+	p = NULL;
+}
+
 //开始
 void start()
 {
@@ -54,6 +77,7 @@ void start()
 		loadimage(&map, _T("E://SnakeImage//map.png"), 800, 600);
 		loadimage(&stop, _T("E://SnakeImage//stop.png"), 800, 600);
 		loadimage(&menu0, _T("E://SnakeImage//menu0.png"), 800, 600);
+		loadimage(&menude, _T("E://SnakeImage//menud.png"), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -80,16 +104,10 @@ void start()
 	//随机数种子及食物初始化
 	{
 	srand((unsigned)time(NULL));
-	fd1->position_x = 0; fd1->position_y = 0;
-	fd2->position_x = 0; fd2->position_y = 0;
-	fd3->position_x = 0; fd3->position_y = 0;
-	fd4->position_x = 0; fd4->position_y = 0;
-	createfood(fd1);
-	createfood(fd2);
-	createfood(fd3);
-	createfood(fd4);
-	fd1->type = 0;
-	fd3->type = 0;
+	fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
+	fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
+	fd3->position_x = 7; fd3->position_y = 7; fd3->type = 0;
+	fd4->position_x = 3; fd4->position_y = 7; fd4->type = 2;
 	}
 
 	//载入开始图片
@@ -117,12 +135,34 @@ void menu()
 		}
 	}
 	Sleep(100);
+	cleardevice();
 	switch (choose)
 	{
 	case 49:draw(); run();  break;
 	case 50:break;//未完
 	case 51:exit(); break;
 	}		
+}
+
+void menud()
+{
+	putimage(0, 0, &menude);
+	while (1)
+	{
+		if (_kbhit())
+		{
+			choose = _getch();
+			break;
+		}
+	}
+	Sleep(100);
+	cleardevice();
+	switch (choose)
+	{
+	case 49:restart(); break;
+	case 50:break;//未完
+	case 51:exit(); break;
+	}
 }
 
 //生成食物
@@ -231,7 +271,7 @@ void drawsnake()
 	case'D':case 'd':putimage((head->position_x) * 20, (head->position_y) * 20, &headd); break;
 	}
 	//画蛇身
-	for(p = head->next;p!=NULL;p=p->next)
+	for(p = head->next;p!=NULL;p = p->next)
 	{
 		putimage((p->position_x) * 20, (p->position_y) * 20, &snake);
 	}
@@ -253,66 +293,77 @@ void pause()
 //检查蛇头接触到什么
 int check()
 {
-	int flag = 1;//1是正常，0是死亡
+	//1是正常，0是死亡
+	int flag = 1;
 	//吃到食物 并重生成食物
-	if(head->position_x == fd1->position_x && head->position_y == fd1->position_y)
+	if (head->position_x == fd1->position_x && head->position_y == fd1->position_y)
+	{
 		switch (fd1->type)
 		{
-		case 0:join(); score = score + 5; 
-			createfood(fd1);break;//基础型
-		case 1:dele(); score = score + 2;
-			createfood(fd1); break;//地雷
-		case 2:dele(); score = score - 5; speed = speed - 10; 
+		case 0:join(); score = score + 5;
+			createfood(fd1); break;//基础型
+		case 1:dele(); score = score + 2; speed = speed - 5;
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
-			} createfood(fd1); break;//毒草
-		case 3:createfood(fd1); break;//未定
+			}
+			createfood(fd1); break;//地雷
+		case 2:dele(); score = score - 5;
+			 createfood(fd1); break;//毒草
+		case 3:score = score + 2; createfood(fd1); break;//用于刷新食物
 		}
-	else
-		if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
-			switch (fd2->type)
-				{					
-				case 0:join(); score = score + 5; createfood(fd2); break;
-				case 1:dele(); score = score + 2;
-					createfood(fd2); break;
-				case 2:dele(); score = score - 5; speed = speed - 10;
-					if (speed == 0)
-					{
-						speed = 10; score = score - 10;
-					}createfood(fd2); break;
-				case 3:break;//未定
-				}
-		else
-			if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
-				switch (fd3->type)
-				{
-				case 0:join(); score = score + 5; 
-					createfood(fd3); break;
-				case 1:dele(); score = score + 2;
-					createfood(fd3); break;
-				case 2:dele(); score = score - 5; speed = speed - 10;
-					if (speed == 0)
-					{
-						speed = 10; score = score - 10;
-					}createfood(fd3); break;
-				case 3:createfood(fd3); break;//未定
-				}
-			else
-				if (head->position_x == fd4->position_x && head->position_y == fd4->position_y)
-					switch (fd4->type)
-					{
-					case 0:join(); score = score + 5;
-						createfood(fd4); break;
-					case 1:dele(); score = score + 2;
-						createfood(fd4); break;
-					case 2:dele(); score = score - 5; speed = speed - 10;
-						if (speed == 0)
-						{
-							speed = 10; score = score - 10;
-						} createfood(fd4); break;
-					case 3:createfood(fd4); break;//未定
-					}
+	}
+	if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
+	{
+		switch (fd2->type)
+		{
+		case 0:join(); score = score + 5; 
+			createfood(fd2); break;
+		case 1:dele(); score = score + 2; speed = speed - 5;
+			if (speed == 0)
+			{
+				speed = 10; score = score - 10;
+			}
+			createfood(fd2); break;
+		case 2:dele(); score = score - 5; 
+			createfood(fd2); break;
+		case 3:score = score + 2; createfood(fd2); break;//未定
+		}
+	}
+	if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
+	{
+		switch (fd3->type)
+		{
+		case 0:join(); score = score + 5;
+			createfood(fd3); break;
+		case 1:dele(); score = score + 2; speed = speed - 10;
+			if (speed == 0)
+			{
+				speed = 10; score = score - 10;
+			}
+			createfood(fd3); break;
+		case 2:dele(); score = score - 5; 
+			createfood(fd3); break;
+		case 3:score = score + 2; createfood(fd3); break;//未定
+		}
+	}
+	if (head->position_x == fd4->position_x && head->position_y == fd4->position_y)
+	{
+		switch (fd4->type)
+		{
+		case 0:join(); score = score + 5;
+			createfood(fd4); break;
+		case 1:dele(); score = score + 2; speed = speed - 10;
+			if (speed == 0)
+			{
+				speed = 10; score = score - 10;
+			}
+			createfood(fd4); break;
+		case 2:dele(); score = score - 5; 
+			createfood(fd4); break;
+		case 3:score = score + 2; createfood(fd4); break;//未定
+		}
+	}
 	if (head == tail)
 	{
 		flag = 0;
@@ -353,7 +404,6 @@ void run()
 		p->position_x = p->pre->position_x;
 		p->position_y = p->pre->position_y;
 	}
-	p = NULL;
 	switch (go_position)
 	{
 	case'w':case'W':head->position_y--; break;
@@ -362,7 +412,6 @@ void run()
 	case'd':case'D':head->position_x++; break;
 	}
 	p = NULL;
-	fd1->type = 0;
 	draw();
 	Sleep(speed);
 	run();
@@ -382,7 +431,10 @@ void gameover()
 	free(tail);
 
 	//结局
+	endtell();
 
+	Sleep(20);
+	menud();
 
 }
 
