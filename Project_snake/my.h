@@ -49,8 +49,9 @@ typedef struct
 {
 	int position_x;
 	int position_y;
-	//食物种类 0为基础型，1为地雷，2为毒草，3为特效草
+	//食物种类 0为基础型，1为毒草，2为地雷，3为特效草
 	int type;
+	int flash;//用于毒草闪烁
 }fd;
 
 //4个食物开局结为基础食物
@@ -60,15 +61,13 @@ fd* fd3 = (fd*)malloc(sizeof(fd));
 fd* fd4 = (fd*)malloc(sizeof(fd));
 
 
-
 int speed = 150;//sleep time(ms)
 int score = 0;//分数
 int choose = 0;//界面选择用
 char c[3];//用于分数打印（用asci转换）
 int stage = 0;//游戏阶段
 int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
-int perhaps = 8;
-
+int perhaps = 8;//与食物生成概率有关
 int go_position = 's';//初始前进方向
 
 //蛇头4个方向及蛇身图片
@@ -77,6 +76,6 @@ IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude;
 IMAGE food0, food1, food2, food3;
 //剧情
 IMAGE story00, story01, story1, story2, story3, story4, story5, story6, story7;
-IMAGE storyend0, storyend1, storyend2, storyend3, scores, menu1;
+IMAGE end1, end2, end3, end41, end42, end5 ,end61, end62, scores, menu1;
 IMAGE help0, help1, list;
 IMAGE stage1, stage2, stage3, stage4;

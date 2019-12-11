@@ -20,6 +20,8 @@ void writelist();
 void readlist();
 //游戏阶段
 void st();
+//进度保存
+
 
 int main()
 {
@@ -30,8 +32,6 @@ int main()
 
 	return 0;
 }
-
-
 
 //开始
 void start()
@@ -66,6 +66,14 @@ void start()
 		loadimage(&stage2, _T("E://SnakeImage//stage2.png"), 800, 600);
 		loadimage(&stage3, _T("E://SnakeImage//stage3.png"), 800, 600);
 		loadimage(&stage4, _T("E://SnakeImage//stage4.png"), 800, 600);
+		loadimage(&end1, _T("E://SnakeImage//end1.png"), 800, 600);
+		loadimage(&end2, _T("E://SnakeImage//end2.png"), 800, 600);
+		loadimage(&end3, _T("E://SnakeImage//end3.png"), 800, 600);
+		loadimage(&end41, _T("E://SnakeImage//end41.png"));
+		loadimage(&end42, _T("E://SnakeImage//end42.png"), 800, 600);
+		loadimage(&end5, _T("E://SnakeImage//end5.png"), 800, 600);
+		loadimage(&end61, _T("E://SnakeImage//end61.png"), 800, 600);
+		loadimage(&end62, _T("E://SnakeImage//end62.png"), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -166,6 +174,11 @@ void createfood(fd*food)
 	food->type = rand() % (perhaps);
 	if (food->type >= 4)
 		food->type = 0;
+
+	if (food->type == 1)
+		food->flash = 0;
+	else
+		food->flash = -1;
 	//检查食物在不在蛇身上
 	int flag = 0;
 	p = head;
@@ -226,31 +239,64 @@ void createfood(fd*food)
 //画图
 void drawfood()
 {
+	if (flag1 == 0)
 	switch (fd1->type)
 	{
 	case 0:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food0); break;
-	case 1:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food1); break;
+	case 1:
+		if (fd1->flash == 0)
+		{
+			putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food1); fd1->flash = 1;
+		}
+		else
+			fd1->flash = 0;
+		break;
 	case 2:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food2); break;
 	case 3:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food3); break;
 	}
+
+	if (flag2 == 0)
 	switch (fd2->type)
 	{
 	case 0:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food0); break;
-	case 1:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food1); break;
+	case 1:
+		if (fd2->flash == 0)
+		{
+			putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food1); fd2->flash = 1;
+		}
+		else
+			fd2->flash = 0;
+		break;
 	case 2:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food2); break;
 	case 3:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food3); break;
 	}
+
+	if (flag3 == 0)
 	switch (fd3->type)
 	{
 	case 0:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food0); break;
-	case 1:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food1); break;
+	case 1:
+		if (fd3->flash == 0)
+		{
+			putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food1); fd3->flash = 1;
+		}
+		else
+			fd3->flash = 0;
+		break;
 	case 2:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food2); break;
 	case 3:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food3); break;
 	}
 	switch (fd4->type)
 	{
 	case 0:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food0); break;
-	case 1:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food1); break;
+	case 1:
+		if (fd4->flash == 0)
+		{
+			putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food1); fd4->flash = 1;
+		}
+		else
+			fd4->flash = 0;
+		break;
 	case 2:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food2); break;
 	case 3:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food3); break;
 	}
@@ -432,7 +478,6 @@ void run
 	run();
 }
 
-
 //游戏结束
 void gameover()
 {
@@ -572,12 +617,47 @@ void  storytell()
 
 void endtell()
 {
-
+	putimage(0, 0, &story1);
+	Sleep(1000);
+	putimage(0, 0, &end1);
+	Sleep(1000);
+	putimage(0, 0, &end2);
+	Sleep(1000);
+	putimage(0, 0, &end3);
+	Sleep(8000);
+	if (score < 60)
+	{
+		putimage(0, 0, &end41);
+		Sleep(2000);
+		putimage(0, 0, &end5);
+		Sleep(2000);
+		putimage(0, 0, &end61);
+		Sleep(6000);
+	}
+	else
+	{
+		putimage(0, 0, &end42);
+		Sleep(2000);
+		putimage(0, 0, &end5);
+		Sleep(2000);
+		putimage(0, 0, &end62);
+		Sleep(6000);
+	}
 }
 
 void writelist()
 {
-
+	cleardevice();
+	putimage(0, 0, &list);
+	if (score >= 60)
+	{
+		FILE* list;
+		errno_t n;
+		n = fopen_s(&list, "E:\\SnakeImage\\list.txt", "a+");
+		fprintf(list, "%d ", score);
+		fclose(list);
+	}
+	system("pause");
 }
 
 void readlist()
