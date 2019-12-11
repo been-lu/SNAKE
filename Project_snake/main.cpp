@@ -16,22 +16,15 @@ void restart();
 void storytell();
 void endtell();
 //排行榜读写
-void listwrite();
-void listread();
-
+void writelist();
+void readlist();
+//游戏阶段
+void st();
 
 int main()
 {
-	//排行榜开文件
-	FILE* list;
-	errno_t d;
-	d= fopen_s(&list,"E://SnakeImage//list.txt", "r+");
-
 	//开始游戏
 	start();
-
-	//关文件+50
-	fclose(list);
 
 	closegraph();
 
@@ -43,7 +36,6 @@ int main()
 //开始
 void start()
 {
-
 	//开图象并读取图片
 	{
 		initgraph(800, 600);
@@ -61,6 +53,19 @@ void start()
 		loadimage(&stop, _T("E://SnakeImage//stop.png"), 800, 600);
 		loadimage(&menu0, _T("E://SnakeImage//menu0.png"), 800, 600);
 		loadimage(&menude, _T("E://SnakeImage//menud.png"), 800, 600);
+		loadimage(&story00, _T("E://SnakeImage//story00.png"), 800, 600);
+		loadimage(&story01, _T("E://SnakeImage//story01.png"), 800, 600);
+		loadimage(&story1, _T("E://SnakeImage//story1.png"), 800, 600);
+		loadimage(&story2, _T("E://SnakeImage//story2.png"), 800, 600);
+		loadimage(&story3, _T("E://SnakeImage//story3.png"), 800, 600);
+		loadimage(&story4, _T("E://SnakeImage//story4.png"), 800, 600);
+		loadimage(&help0, _T("E://SnakeImage//help0.png"), 800, 600);
+		loadimage(&help1, _T("E://SnakeImage//help1.png"), 800, 600);
+		loadimage(&list, _T("E://SnakeImage//list.jpg"));
+		loadimage(&stage1, _T("E://SnakeImage//stage1.png"), 800, 600);
+		loadimage(&stage2, _T("E://SnakeImage//stage2.png"), 800, 600);
+		loadimage(&stage3, _T("E://SnakeImage//stage3.png"), 800, 600);
+		loadimage(&stage4, _T("E://SnakeImage//stage4.png"), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -124,8 +129,8 @@ void menu()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:draw(); run();  break;
-	case 50:break;//未完
+	case 49:storytell(); draw(); run();  break;
+	case 50:readlist(); break;//未完
 	case 51:exit(); break;
 	}		
 }
@@ -148,7 +153,7 @@ void menud()
 	switch (choose)
 	{
 	case 49:restart(); break;
-	case 50:break;//未完
+	case 50:readlist(); break;//未完
 	case 51:exit(); break;
 	}
 }
@@ -158,7 +163,7 @@ void createfood(fd*food)
 {
 	food->position_x = rand() % (MAP_WIDTH );
 	food->position_y = rand() % (MAP_LENGTH );
-	food->type = rand() % (7);
+	food->type = rand() % (perhaps);
 	if (food->type >= 4)
 		food->type = 0;
 	//检查食物在不在蛇身上
@@ -294,6 +299,7 @@ int check()
 	//1是正常，0是死亡
 	int flag = 1;
 	//吃到食物 并重生成食物
+	if(flag1 == 0)
 	if (head->position_x == fd1->position_x && head->position_y == fd1->position_y)
 	{
 		switch (fd1->type)
@@ -312,6 +318,8 @@ int check()
 			createfood(fd1); break;//用于刷新食物
 		}
 	}
+
+	if(flag2 == 0)
 	if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
 	{
 		switch (fd2->type)
@@ -330,6 +338,8 @@ int check()
 			createfood(fd2); break;//未定
 		}
 	}
+
+	if(flag3 == 0)
 	if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
 	{
 		switch (fd3->type)
@@ -347,6 +357,7 @@ int check()
 		case 3:score = score + 2; createfood(fd3); break;//未定
 		}
 	}
+
 	if (head->position_x == fd4->position_x && head->position_y == fd4->position_y)
 	{
 		switch (fd4->type)
@@ -401,6 +412,7 @@ void run
 		gameover();
 		return;
 	}
+	st();
 	for(p=tail;p!=head;p=p->pre)
 	{
 		p->position_x = p->pre->position_x;
@@ -432,9 +444,17 @@ void gameover()
 		p = p->next;
 	}
 	free(tail);
-
+	if(flag1 == 0)
+		free(fd1);
+	if(flag2 == 0)
+		free(fd2);
+	if(flag3 == 0)
+		free(fd3);
+	free(fd4);
 	//结局
 	endtell();
+
+	writelist();
 
 	Sleep(20);
 	menud();
@@ -492,9 +512,11 @@ void restart()
 {
 	score = 0;
 	speed = 150;
+	stage = 0;
 	go_position = 's';
 	//初始化
 	{
+		//蛇归位
 		head = (sn*)malloc(sizeof(sn));
 		head->pre = NULL;
 		head->position_x = 7;
@@ -511,13 +533,15 @@ void restart()
 		tail->pre = p;
 		tail->next = NULL;
 		p = NULL;
-		//初始长度为3
-		createfood(fd1);
-		createfood(fd2);
-		createfood(fd3);
-		createfood(fd4);
-		fd1->type = 0;
-		fd3->type = 0;
+		//食物归位
+		fd* fd1 = (fd*)malloc(sizeof(fd));
+		fd* fd2 = (fd*)malloc(sizeof(fd));
+		fd* fd3 = (fd*)malloc(sizeof(fd));
+		fd* fd4 = (fd*)malloc(sizeof(fd));
+		fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
+		fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
+		fd3->position_x = 7; fd3->position_y = 7; fd3->type = 0;
+		fd4->position_x = 3; fd4->position_y = 7; fd4->type = 2;
 	}
 
 	//跑起来
@@ -528,7 +552,22 @@ void restart()
 
 void  storytell()
 {
-
+	putimage(0, 0, &story00);
+	Sleep(1000);
+	putimage(0, 0, &story01);
+	Sleep(2000);
+	putimage(0, 0, &story1);
+	Sleep(2000);
+	putimage(0, 0, &story2);
+	Sleep(6000);
+	putimage(0, 0, &story3);
+	Sleep(2000);
+	putimage(0, 0, &story4);
+	Sleep(2000);
+	putimage(0, 0, &help0);
+	Sleep(4000);
+	putimage(0, 0, &help1);
+	system("pause");
 }
 
 void endtell()
@@ -543,5 +582,75 @@ void writelist()
 
 void readlist()
 {
+	putimage(0, 0, &list);
+	FILE* list;
+	int a, i, j;
+	int b[32] = { 0 };
+	errno_t no;
+	TCHAR s[4];
+	no = fopen_s(&list, "E:\\SnakeImage\\list.txt", "r");
+	for (i = 0; i <= 30; i++)
+	{
+		fscanf_s(list, "%d", &b[i]);
+	}
+	for (j = 0; j <= 30; j++)
+		for (i = 0; i <= 28; i++)
+		{
+			if (b[i] <= b[i + 1])
+			{
+				b[i] = b[i] ^ b[i + 1];
+				b[i + 1] = b[i] ^ b[i + 1];
+				b[i] = b[i] ^ b[i + 1];
+			}
+		}
+	for (i = 0; i <= 9; i++)
+	{
+		a = b[i];
+		_stprintf_s(s, _T("%d"), a);
+		settextstyle(19, 0, _T("宋体"));
+		outtextxy(450, 102 + 36 * i, s);
+	}
+	fclose(list);
+	system("pause");
+	menu();
+}
 
+void st()
+{
+	if (flag1 == 0 && score >= 20)
+	{
+		flag1 = 1;
+		free(fd1);
+		perhaps--;
+		putimage(0, 0, &stage1);
+		system("pause");
+		return;
+	}
+
+	if (flag2 == 0 && score >= 35)
+	{
+		flag2 = 1;
+		free(fd2);
+		perhaps--;
+		putimage(0, 0, &stage2);
+		system("pause");
+		return;
+	}
+	if (flag3 == 0 && score >= 50)
+	{
+		flag3 = 1;
+		free(fd3);
+		perhaps--;
+		putimage(0, 0, &stage3);
+		system("pause");
+		return;
+	}
+	if (flag4 == 0 && score >= 60)
+	{
+		flag4 = 1;
+		perhaps--;
+		putimage(0, 0, &stage4);
+		system("pause");
+		return;
+	}
 }

@@ -53,14 +53,6 @@ typedef struct
 	int type;
 }fd;
 
-//排名结构体
-typedef struct list
-{
-	char name[20];
-	int score;
-}lt;
-
-
 //4个食物开局结为基础食物
 fd* fd1 = (fd*)malloc(sizeof(fd));
 fd* fd2 = (fd*)malloc(sizeof(fd));
@@ -72,7 +64,10 @@ fd* fd4 = (fd*)malloc(sizeof(fd));
 int speed = 150;//sleep time(ms)
 int score = 0;//分数
 int choose = 0;//界面选择用
-char c[3];
+char c[3];//用于分数打印（用asci转换）
+int stage = 0;//游戏阶段
+int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
+int perhaps = 8;
 
 int go_position = 's';//初始前进方向
 
@@ -81,6 +76,7 @@ IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情
-IMAGE story0, story1, story2, story3, story4, story5, story6, story7;
+IMAGE story00, story01, story1, story2, story3, story4, story5, story6, story7;
 IMAGE storyend0, storyend1, storyend2, storyend3, scores, menu1;
-
+IMAGE help0, help1, list;
+IMAGE stage1, stage2, stage3, stage4;
