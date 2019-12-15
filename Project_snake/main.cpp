@@ -510,7 +510,7 @@ int check()
 		return flag;
 	}
 	//×²Ç½
-	if (head->position_x < 0 || head->position_x > 40 || head->position_y < 0 || head->position_y > 30)
+	if (head->position_x < 0 || head->position_x > 39 || head->position_y < 0 || head->position_y > 29)
 	{
 		flag = 0;
 		return flag;
@@ -524,7 +524,7 @@ int check()
 				return flag;
 			}
 		for (int i = 5; i <= 25; i++)
-			if (head->position_y == 25 && head->position_x == i)
+			if (head->position_x == 25 && head->position_y == i)
 			{
 				flag = 0;
 				return flag;
@@ -862,15 +862,22 @@ void st()
 //½ø¶È´æÈ¡
 void save()
 {
-
+	FILE* save;
+	errno_t n;
+	n = fopen_s(&save, "E:\\SnakeImage\\list.txt", "a+");
+	
+	fclose(save);
 
 	putimage(360, 270, &done);
 	Sleep(100);
 }
 void load()
 {
+	FILE* save;
+	errno_t n;
+	n = fopen_s(&save, "E:\\SnakeImage\\list.txt", "a+");
 
-
+	fclose(save);
 
 	putimage(360, 270, &done);
 	Sleep(100);
