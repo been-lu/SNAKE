@@ -21,6 +21,7 @@ typedef struct snake
 sn* head;//蛇头
 sn* tail;//蛇尾
 sn* p = NULL;//用于遍历
+int length;//蛇长
 
 //加入节点
 void join()
@@ -32,6 +33,7 @@ void join()
 	p->next = NULL;
 	tail = p;
 	p = NULL;
+	length++;
 }
 
 //删除尾节点
@@ -42,6 +44,7 @@ void dele()
 	tail = p;
 	tail->next = NULL;
 	p = NULL;
+	length--;
 }
 
 //食物结构体
@@ -69,9 +72,12 @@ int stage = 0;//游戏阶段
 int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
 int perhaps = 8;//与食物生成概率有关
 int go_position = 's';//初始前进方向
+int a[5] = { 0,1,-1,0,0 };//用于地图画十字
+int b[5] = { 0,0,0,1,-1 };
+
 
 //蛇头4个方向及蛇身图片
-IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude;
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情

@@ -21,7 +21,8 @@ void readlist();
 //游戏阶段
 void st();
 //进度保存
-
+void save();
+void load();
 
 int main()
 {
@@ -74,6 +75,8 @@ void start()
 		loadimage(&end5, _T("E://SnakeImage//end5.png"), 800, 600);
 		loadimage(&end61, _T("E://SnakeImage//end61.png"), 800, 600);
 		loadimage(&end62, _T("E://SnakeImage//end62.png"), 800, 600);
+		loadimage(&wall, _T("E://SnakeImage//wall.png"), 20, 20);
+		loadimage(&done, _T("E://SnakeImage//done.png"), 80, 60);
 	}
 
 	//链表蛇初始化
@@ -95,6 +98,7 @@ void start()
 		tail->next = NULL;
 		p = NULL;
 		//初始长度为3
+		length = 3;
 	}
 
 	//随机数种子及食物初始化
@@ -118,7 +122,7 @@ void start()
 	menu();
 }
 
-//开始选择菜单
+//选择菜单
 void menu()
 {
 	putimage(0, 0, &menu0);
@@ -127,7 +131,7 @@ void menu()
 		if (_kbhit())
 		{
 			choose = _getch();
-			if (choose != 49 && choose != 50 && choose != 51)
+			if (choose != 49 && choose != 50 && choose != 51 && choose != 52)
 				continue;
 			else
 				break;
@@ -137,12 +141,13 @@ void menu()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:storytell(); draw(); run();  break;
-	case 50:readlist(); break;//未完
-	case 51:exit(); break;
+	case 49://storytell();
+		draw(); run();  break;
+	case 50:readlist(); break;
+	case 51:load(); break;
+	case 52:exit(); break;
 	}		
 }
-
 void menud()
 {
 	putimage(0, 0, &menude);
@@ -151,7 +156,7 @@ void menud()
 		if (_kbhit())
 		{
 			choose = _getch();
-			if (choose != 49 && choose != 50 && choose != 51)
+			if (choose != 49 && choose != 50 && choose != 51 && choose!=52)
 				continue;
 			else
 				break;
@@ -161,8 +166,9 @@ void menud()
 	switch (choose)
 	{
 	case 49:restart(); break;
-	case 50:readlist(); break;//未完
-	case 51:exit(); break;
+	case 50:readlist(); break;
+	case 51:load(); break;
+	case 52:exit(); break;
 	}
 }
 
@@ -179,6 +185,12 @@ void createfood(fd*food)
 		food->flash = 0;
 	else
 		food->flash = -1;
+	//检查食物会不会被分数挡住
+	if (food->position_x <= 3 && food->position_y == 0)
+	{
+		createfood(food);return;
+	}
+
 	//检查食物在不在蛇身上
 	int flag = 0;
 	p = head;
@@ -192,7 +204,44 @@ void createfood(fd*food)
 	}
 	p = NULL;
 	if (flag == 1)
-		createfood(food);
+	{
+		createfood(food); return;
+	}
+	//会不会上墙
+	{
+	if (stage >= 1)
+	{
+		for (int i = 5; i <= 25; i++)
+			if (food->position_x == 300 && food->position_y == (i * 20))
+			{
+				createfood(food); return;
+			}
+		for (int i = 5; i <= 25; i++)
+			if (food->position_y == 500 && food->position_x == (i * 20))
+			{
+				createfood(food); return;
+			}
+	}
+	if (stage >= 2)
+	{
+		for (int i = 0; i < 5; i++)
+			if (food->position_x == (20 + a[i]) && food->position_y == (5 + b[i]))
+			{
+				createfood(food); return;
+			}
+		for (int i = 0; i < 5; i++)
+			if (food->position_x == (20 + a[i]) && food->position_y == (15 + b[i]))
+			{
+				createfood(food); return;
+			}
+		for (int i = 0; i < 5; i++)
+			if (food->position_x == (20 + a[i]) && food->position_y == (25 + b[i]))
+			{
+				createfood(food); return;
+			}
+
+	}
+	}
 	//检查食物会不会重合
 	//就不检查了
 	//还是要检查的，小概率事件还是会发生的
@@ -319,12 +368,32 @@ void drawsnake()
 	//putimage((tail->position_x) * 20, (tail->position_y) * 20, &snake);
 	//putimage((tail->pre->position_x) * 20, (tail->pre->position_y) * 20, &snake);
 }
+void drawwall()
+{
+	if (stage >= 1)
+	{
+		for (int i = 5; i <= 25; i++)
+			putimage(300, i * 20, &wall);
+		for (int i = 5; i <= 25; i++)
+			putimage(500, i * 20, &wall);
+	}
+	if (stage >= 2)
+	{
+		for (int i = 0; i < 5; i++)
+			putimage((20 + a[i]) * 20, (5 + b[i]) * 20, &wall);
+		for (int i = 0; i < 5; i++)
+			putimage((20 + a[i]) * 20, (15 + b[i]) * 20, &wall);
+		for (int i = 0; i < 5; i++)
+			putimage((20 + a[i]) * 20, (25 + b[i]) * 20, &wall);
+	}
+}
 void draw()
 {
 	cleardevice();
 	putimage(0, 0, &map);
 	drawfood();
 	drawsnake();
+	drawwall();
 	outtextxy(0, 0,"Score:");
 	c[2] = score % 10 + 48;
 	c[1] = (score / 10) % 10 + 48;
@@ -336,7 +405,20 @@ void draw()
 void pause()
 {
 	putimage(0, 0, &stop);
-	system("pause");
+	int key;
+	for (;;)
+	{
+		if (_kbhit())
+		{
+			key = _getch();
+			if (key == 's'|| key == 'S')
+			{
+				save();
+			}
+			if (key == 'p'|| key == 'P')
+				break;
+		}
+	}
 }
 
 //检查蛇头接触到什么
@@ -433,6 +515,43 @@ int check()
 		flag = 0;
 		return flag;
 	}
+	if (stage >= 1)
+	{
+		for (int i = 5; i <= 25; i++)
+			if (head->position_x == 15 && head->position_y == i)
+			{
+				flag=0;
+				return flag;
+			}
+		for (int i = 5; i <= 25; i++)
+			if (head->position_y == 25 && head->position_x == i)
+			{
+				flag = 0;
+				return flag;
+			}
+	}
+	if (stage >= 2)
+	{
+		for (int i = 0; i < 5; i++)
+			if(head->position_x == (20 + a[i]) && head->position_y == (5 + b[i]))
+			{
+				flag = 0;
+				return flag;
+			}
+		for (int i = 0; i < 5; i++)
+			if (head->position_x == (20 + a[i]) && head->position_y == (15 + b[i]))
+			{
+				flag = 0;
+				return flag;
+			}
+		for (int i = 0; i < 5; i++)
+			if (head->position_x == (20 + a[i]) && head->position_y == (25 + b[i]))
+			{
+				flag = 0;
+				return flag;
+			}
+
+	}
 	//吃到自己
 	p = head->next;
 	while (p)
@@ -449,8 +568,7 @@ int check()
 }
 
 //让蛇跑起来
-void run
-()
+void run()
 {
 	keyboard();
 	if (check() == 0)
@@ -578,6 +696,7 @@ void restart()
 		tail->pre = p;
 		tail->next = NULL;
 		p = NULL;
+		length = 3;
 		//食物归位
 		fd* fd1 = (fd*)malloc(sizeof(fd));
 		fd* fd2 = (fd*)malloc(sizeof(fd));
@@ -595,7 +714,8 @@ void restart()
 
 }
 
-void  storytell()
+//故事
+void storytell()
 {
 	putimage(0, 0, &story00);
 	Sleep(1000);
@@ -614,7 +734,6 @@ void  storytell()
 	putimage(0, 0, &help1);
 	system("pause");
 }
-
 void endtell()
 {
 	putimage(0, 0, &story1);
@@ -645,11 +764,12 @@ void endtell()
 	}
 }
 
+//排行榜
 void writelist()
 {
 	cleardevice();
 	putimage(0, 0, &list);
-	if (score >= 60)
+	if (score >= 40)
 	{
 		FILE* list;
 		errno_t n;
@@ -659,7 +779,6 @@ void writelist()
 	}
 	system("pause");
 }
-
 void readlist()
 {
 	putimage(0, 0, &list);
@@ -695,6 +814,7 @@ void readlist()
 	menu();
 }
 
+//阶段
 void st()
 {
 	if (flag1 == 0 && score >= 20)
@@ -703,6 +823,7 @@ void st()
 		free(fd1);
 		perhaps--;
 		putimage(0, 0, &stage1);
+		stage = 1;
 		system("pause");
 		return;
 	}
@@ -713,6 +834,7 @@ void st()
 		free(fd2);
 		perhaps--;
 		putimage(0, 0, &stage2);
+		stage = 2;
 		system("pause");
 		return;
 	}
@@ -722,6 +844,7 @@ void st()
 		free(fd3);
 		perhaps--;
 		putimage(0, 0, &stage3);
+		stage = 3;
 		system("pause");
 		return;
 	}
@@ -730,7 +853,25 @@ void st()
 		flag4 = 1;
 		perhaps--;
 		putimage(0, 0, &stage4);
+		stage = 4;
 		system("pause");
 		return;
 	}
+}
+
+//进度存取
+void save()
+{
+
+
+	putimage(360, 270, &done);
+	Sleep(100);
+}
+void load()
+{
+
+
+
+	putimage(360, 270, &done);
+	Sleep(100);
 }
