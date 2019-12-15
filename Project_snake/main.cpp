@@ -77,6 +77,7 @@ void start()
 		loadimage(&end62, _T("E://SnakeImage//end62.png"), 800, 600);
 		loadimage(&wall, _T("E://SnakeImage//wall.png"), 20, 20);
 		loadimage(&done, _T("E://SnakeImage//done.png"), 80, 60);
+		loadimage(&death, _T("E://SnakeImage//gameover.png"), 400, 300);
 	}
 
 	//链表蛇初始化
@@ -286,9 +287,9 @@ void createfood(fd*food)
 }
 
 //画图
-void drawfood()
+void drawfood() 
 {
-	if (flag1 == 0)
+	if (stage == 0)
 	switch (fd1->type)
 	{
 	case 0:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food0); break;
@@ -304,7 +305,7 @@ void drawfood()
 	case 3:putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food3); break;
 	}
 
-	if (flag2 == 0)
+	if (stage <= 1)
 	switch (fd2->type)
 	{
 	case 0:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food0); break;
@@ -320,7 +321,7 @@ void drawfood()
 	case 3:putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food3); break;
 	}
 
-	if (flag3 == 0)
+	if (stage <= 2)
 	switch (fd3->type)
 	{
 	case 0:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food0); break;
@@ -368,7 +369,7 @@ void drawsnake()
 	//putimage((tail->position_x) * 20, (tail->position_y) * 20, &snake);
 	//putimage((tail->pre->position_x) * 20, (tail->pre->position_y) * 20, &snake);
 }
-void drawwall()
+void drawwall() //没错，墙使是我自己画的，
 {
 	if (stage >= 1)
 	{
@@ -427,7 +428,7 @@ int check()
 	//1是正常，0是死亡
 	int flag = 1;
 	//吃到食物 并重生成食物
-	if(flag1 == 0)
+	if(stage == 0)
 	if (head->position_x == fd1->position_x && head->position_y == fd1->position_y)
 	{
 		switch (fd1->type)
@@ -447,7 +448,7 @@ int check()
 		}
 	}
 
-	if(flag2 == 0)
+	if(stage <= 1)
 	if (head->position_x == fd2->position_x && head->position_y == fd2->position_y)
 	{
 		switch (fd2->type)
@@ -467,7 +468,7 @@ int check()
 		}
 	}
 
-	if(flag3 == 0)
+	if(stage <= 2)
 	if (head->position_x == fd3->position_x && head->position_y == fd3->position_y)
 	{
 		switch (fd3->type)
@@ -573,6 +574,8 @@ void run()
 	keyboard();
 	if (check() == 0)
 	{
+		putimage(200, 150, &death);
+		Sleep(500);
 		gameover();
 		return;
 	}
@@ -607,11 +610,11 @@ void gameover()
 		p = p->next;
 	}
 	free(tail);
-	if(flag1 == 0)
+	if(stage == 0)
 		free(fd1);
-	if(flag2 == 0)
+	if(stage <= 1)
 		free(fd2);
-	if(flag3 == 0)
+	if(stage <= 2)
 		free(fd3);
 	free(fd4);
 	//结局
@@ -817,10 +820,9 @@ void readlist()
 //阶段
 void st()
 {
-	if (flag1 == 0 && score >= 20)
+	if (stage == 0 && score >= 20)
 	{
-		flag1 = 1;
-		free(fd1);
+		//free(fd1);
 		perhaps--;
 		putimage(0, 0, &stage1);
 		stage = 1;
@@ -828,29 +830,26 @@ void st()
 		return;
 	}
 
-	if (flag2 == 0 && score >= 35)
+	if (stage == 1 && score >= 35)
 	{
-		flag2 = 1;
-		free(fd2);
+		//free(fd2);
 		perhaps--;
 		putimage(0, 0, &stage2);
 		stage = 2;
 		system("pause");
 		return;
 	}
-	if (flag3 == 0 && score >= 50)
+	if (stage == 2 && score >= 50)
 	{
-		flag3 = 1;
-		free(fd3);
+		//free(fd3);
 		perhaps--;
 		putimage(0, 0, &stage3);
 		stage = 3;
 		system("pause");
 		return;
 	}
-	if (flag4 == 0 && score >= 60)
+	if (stage == 3 && score >= 60)
 	{
-		flag4 = 1;
 		perhaps--;
 		putimage(0, 0, &stage4);
 		stage = 4;
@@ -869,6 +868,7 @@ void save()
 	fclose(save);
 
 	putimage(360, 270, &done);
+	cleardevice();
 	Sleep(100);
 }
 void load()
@@ -879,6 +879,10 @@ void load()
 
 	fclose(save);
 
+
+	cleardevice();
 	putimage(360, 270, &done);
-	Sleep(100);
+	Sleep(700);
+	draw();
+	run();
 }

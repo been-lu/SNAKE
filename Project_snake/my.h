@@ -69,7 +69,7 @@ int score = 0;//分数
 int choose = 0;//界面选择用
 char c[3];//用于分数打印（用asci转换）
 int stage = 0;//游戏阶段
-int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
+int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;//不要了
 int perhaps = 8;//与食物生成概率有关
 int go_position = 's';//初始前进方向
 int a[5] = { 0,1,-1,0,0 };//用于地图画十字
@@ -77,7 +77,7 @@ int b[5] = { 0,0,0,1,-1 };
 
 
 //蛇头4个方向及蛇身图片
-IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done;
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done, death;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情
