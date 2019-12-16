@@ -12,6 +12,7 @@ void run();
 void exit();
 int check();
 void restart();
+void setdegree();
 //应该有个故事
 void storytell();
 void endtell();
@@ -78,6 +79,7 @@ void start()
 		loadimage(&wall, _T("E://SnakeImage//wall.png"), 20, 20);
 		loadimage(&done, _T("E://SnakeImage//done.png"), 80, 60);
 		loadimage(&death, _T("E://SnakeImage//gameover.png"), 400, 300);
+		loadimage(&degree, _T("E://SnakeImage//degree.png"), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -112,12 +114,14 @@ void start()
 	}
 
 	//载入开始图片
+	{
 	loadimage(NULL, _T("E://SnakeImage//load0.jpg"), 800, 600);
 	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load1.jpg"), 800, 600);
 	Sleep(1700);
 	loadimage(NULL, _T("E://SnakeImage//load2.png"), 800, 600);
-	Sleep(1700);
+	Sleep(1700); 
+	}
 	
 	//进入开始界面
 	menu();
@@ -142,7 +146,7 @@ void menu()
 	cleardevice();
 	switch (choose)
 	{
-	case 49://storytell();
+	case 49:setdegree(); storytell();
 		draw(); run();  break;
 	case 50:readlist(); break;
 	case 51:load(); break;
@@ -166,11 +170,35 @@ void menud()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:restart(); break;
+	case 49:setdegree(); restart(); break;
 	case 50:readlist(); break;
 	case 51:load(); break;
 	case 52:exit(); break;
 	}
+}
+void setdegree()
+{
+	cleardevice();
+	int key;
+	putimage(0, 0, &degree);
+	for (;;)
+	{
+		if (_kbhit)
+		{
+			key = _getch();
+			if (key == 49 || key == 50)
+				break;
+			else
+				continue;
+		}
+	}
+	switch (key)
+	{
+	case 49:speed = 150; perhaps = 8; hard = 0; break;
+	case 50:speed = 100; perhaps = 7; hard = 1; break;
+	}
+	putimage(360, 270, &done);
+	Sleep(500);
 }
 
 //生成食物
@@ -433,9 +461,14 @@ int check()
 	{
 		switch (fd1->type)
 		{
-		case 0:join(); score = score + 4;
+		case 0:join(); 
+			if (hard == 0)score = score + 4;
+			else score = score + 5;
 			createfood(fd1); break;//基础型
-		case 1:dele(); score = score + 2; speed = speed - 5;
+		case 1:dele(); 
+			if (hard == 0)score = score + 2;
+			else score = score + 3;
+			speed = speed - 5;
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
@@ -453,9 +486,14 @@ int check()
 	{
 		switch (fd2->type)
 		{
-		case 0:join(); score = score + 4; 
+		case 0:join(); 
+			if (hard == 0)score = score + 4;
+			else score = score + 5;
 			createfood(fd2); break;
-		case 1:dele(); score = score + 2; speed = speed - 5;
+		case 1:dele(); 
+			if (hard == 0)score = score + 2;
+			else score = score + 3;
+			speed = speed - 5;
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
@@ -473,9 +511,14 @@ int check()
 	{
 		switch (fd3->type)
 		{
-		case 0:join(); score = score + 4;
+		case 0:join(); 
+			if (hard == 0)	score = score + 4;
+			else score = score + 5;
 			createfood(fd3); break;
-		case 1:dele(); score = score + 2; speed = speed - 10;
+		case 1:dele(); 
+			if (hard == 0)score = score + 2;
+			else score = score + 3;
+			speed = speed - 10;
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
@@ -491,9 +534,14 @@ int check()
 	{
 		switch (fd4->type)
 		{
-		case 0:join(); score = score + 4;
+		case 0:join(); 
+			if (hard == 0)score = score + 4;
+			else score = score + 5;
 			createfood(fd4); break;
-		case 1:dele(); score = score + 2; speed = speed - 10;
+		case 1:dele(); 
+			if(hard==0)score = score + 2; 
+			else score = score + 3; 
+			speed = speed - 10;
 			if (speed == 0)
 			{
 				speed = 10; score = score - 10;
@@ -603,6 +651,7 @@ void run()
 void gameover()
 {
 	//空间释放
+	{
 	p = head->next;
 	while (p)
 	{
@@ -610,19 +659,16 @@ void gameover()
 		p = p->next;
 	}
 	free(tail);
-	if(stage == 0)
-		free(fd1);
-	if(stage <= 1)
-		free(fd2);
-	if(stage <= 2)
-		free(fd3);
-	free(fd4);
+	}
+
 	//结局
 	endtell();
 
+	//如果可以写入排行榜
 	writelist();
-
 	Sleep(20);
+
+	//进入死亡选择菜单
 	menud();
 
 }
@@ -641,28 +687,30 @@ void keyboard()
 		else
 		{
 			//还要防蛇吃自己
-			if ((key == 'w' || key == 'W') && (go_position == 's' || go_position == 'S'))
 			{
-				go_position = 's';
-				death = 1;
+				if ((key == 'w' || key == 'W') && (go_position == 's' || go_position == 'S'))
+				{
+					go_position = 's';
+					death = 1;
+				}
+				if ((key == 's' || key == 'S') && (go_position == 'w' || go_position == 'W'))
+				{
+					go_position = 'w';
+					death = 1;
+				}
+				if ((key == 'a' || key == 'A') && (go_position == 'D' || go_position == 'd'))
+				{
+					go_position = 'd';
+					death = 1;
+				}
+				if ((key == 'd' || key == 'D') && (go_position == 'a' || go_position == 'A'))
+				{
+					go_position = 'a';
+					death = 1;
+				}
+				if (death == 0)
+					go_position = key;
 			}
-			if ((key == 's' || key == 'S') && (go_position == 'w' || go_position == 'W'))
-			{
-				go_position = 'w';
-				death = 1;
-			}
-			if ((key == 'a' || key == 'A') && (go_position == 'D' || go_position == 'd'))
-			{
-				go_position = 'd';
-				death = 1;
-			}
-			if ((key == 'd' || key == 'D') && (go_position == 'a' || go_position == 'A'))
-			{
-				go_position = 'a';
-				death = 1;
-			}
-			if (death == 0)
-				go_position = key;
 		}
 	}
 }
@@ -677,7 +725,6 @@ void exit()
 void restart()
 {
 	score = 0;
-	speed = 150;
 	stage = 0;
 	go_position = 's';
 	//初始化
@@ -701,10 +748,6 @@ void restart()
 		p = NULL;
 		length = 3;
 		//食物归位
-		fd* fd1 = (fd*)malloc(sizeof(fd));
-		fd* fd2 = (fd*)malloc(sizeof(fd));
-		fd* fd3 = (fd*)malloc(sizeof(fd));
-		fd* fd4 = (fd*)malloc(sizeof(fd));
 		fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
 		fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
 		fd3->position_x = 7; fd3->position_y = 7; fd3->type = 0;
@@ -772,7 +815,7 @@ void writelist()
 {
 	cleardevice();
 	putimage(0, 0, &list);
-	if (score >= 40)
+	if (score >= 30)
 	{
 		FILE* list;
 		errno_t n;
@@ -827,6 +870,8 @@ void st()
 		putimage(0, 0, &stage1);
 		stage = 1;
 		system("pause");
+		draw();
+		Sleep(400);
 		return;
 	}
 
@@ -837,6 +882,8 @@ void st()
 		putimage(0, 0, &stage2);
 		stage = 2;
 		system("pause");
+		draw();
+		Sleep(400);
 		return;
 	}
 	if (stage == 2 && score >= 50)
@@ -846,6 +893,8 @@ void st()
 		putimage(0, 0, &stage3);
 		stage = 3;
 		system("pause");
+		draw();
+		Sleep(400);
 		return;
 	}
 	if (stage == 3 && score >= 60)
@@ -854,6 +903,8 @@ void st()
 		putimage(0, 0, &stage4);
 		stage = 4;
 		system("pause");
+		draw();
+		Sleep(400);
 		return;
 	}
 }
@@ -863,24 +914,68 @@ void save()
 {
 	FILE* save;
 	errno_t n;
-	n = fopen_s(&save, "E:\\SnakeImage\\list.txt", "a+");
+	n = fopen_s(&save, "E:\\SnakeImage\\save.txt", "w");
 	
+	//啊，进去啦
+	fprintf(save, "%d %d %d %d ", score, stage, speed, go_position);
+	fprintf(save, "%d %d %d %d ", fd1->position_x, fd1->position_y, fd1->type, fd1->flash);
+	fprintf(save, "%d %d %d %d ", fd2->position_x, fd2->position_y, fd2->type, fd2->flash);
+	fprintf(save, "%d %d %d %d ", fd3->position_x, fd3->position_y, fd3->type, fd3->flash);
+	fprintf(save, "%d %d %d %d ", fd4->position_x, fd4->position_y, fd4->type, fd4->flash);
+
+	p = head;
+	fprintf(save, "%d ", length);
+	for (int i = 1; i <= length; i++)
+	{
+		fprintf(save, "%d %d ", p->position_x, p->position_y);
+		p = p->next;
+	}
+
 	fclose(save);
 
 	putimage(360, 270, &done);
-	cleardevice();
 	Sleep(100);
 }
 void load()
 {
 	FILE* save;
 	errno_t n;
-	n = fopen_s(&save, "E:\\SnakeImage\\list.txt", "a+");
+	n = fopen_s(&save, "E:\\SnakeImage\\save.txt", "r");
 
+	//啊，进来啦, *先排除异己
+	{
+		p = head;
+		while (p->next)
+		{
+			q = p->next;
+			free(p);
+			p = q;
+		}
+		free(tail);
+	}
+	fscanf_s(save, "%d %d %d %d", &score, &stage, &speed, &go_position);
+	fscanf_s(save, "%d %d %d %d ", &fd1->position_x, &fd1->position_y, &fd1->type, &fd1->flash);
+	fscanf_s(save, "%d %d %d %d ", &fd2->position_x, &fd2->position_y, &fd2->type, &fd2->flash);
+	fscanf_s(save, "%d %d %d %d ", &fd3->position_x, &fd3->position_y, &fd3->type, &fd3->flash);
+	fscanf_s(save, "%d %d %d %d ", &fd4->position_x, &fd4->position_y, &fd4->type, &fd4->flash);
+	fscanf_s(save, "%d", &length);
+	head = (sn*)malloc(sizeof(sn));
+	p = head;
+	q = NULL;
+	for (int i = 1; i <= length; i++)
+	{
+		fscanf_s(save, "%d %d", &p->position_x, &p->position_y);
+		p->next = (sn*)malloc(sizeof(sn));
+		p->pre = q;
+		q = p;
+		p = p->next;
+	}
+	tail = q;
+	tail->next = NULL;
+	free(p);
+	p = NULL; q = NULL;
 	fclose(save);
 
-
-	cleardevice();
 	putimage(360, 270, &done);
 	Sleep(700);
 	draw();

@@ -21,6 +21,7 @@ typedef struct snake
 sn* head;//蛇头
 sn* tail;//蛇尾
 sn* p = NULL;//用于遍历
+sn* q = NULL;//遍历个锤子
 int length;//蛇长
 
 //加入节点
@@ -57,7 +58,7 @@ typedef struct
 	int flash;//用于毒草闪烁
 }fd;
 
-//4个食物开局结为基础食物
+//4个食物开局结为基础食物且进入新阶段时只会隐藏而不是释放空间
 fd* fd1 = (fd*)malloc(sizeof(fd));
 fd* fd2 = (fd*)malloc(sizeof(fd));
 fd* fd3 = (fd*)malloc(sizeof(fd));
@@ -71,13 +72,14 @@ char c[3];//用于分数打印（用asci转换）
 int stage = 0;//游戏阶段
 int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;//不要了
 int perhaps = 8;//与食物生成概率有关
+int hard;//难度选择导致分数什么的
 int go_position = 's';//初始前进方向
 int a[5] = { 0,1,-1,0,0 };//用于地图画十字
 int b[5] = { 0,0,0,1,-1 };
 
 
-//蛇头4个方向及蛇身图片
-IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done, death;
+//蛇头4个方向及蛇身图片还有乱七八糟的东西
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done, death, degree;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情
