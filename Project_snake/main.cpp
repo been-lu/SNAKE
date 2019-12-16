@@ -102,6 +102,7 @@ void start()
 		p = NULL;
 		//初始长度为3
 		length = 3;
+		over = 0;
 	}
 
 	//随机数种子及食物初始化
@@ -660,7 +661,7 @@ void gameover()
 	}
 	free(tail);
 	}
-
+	over = 1;
 	//结局
 	endtell();
 
@@ -747,6 +748,7 @@ void restart()
 		tail->next = NULL;
 		p = NULL;
 		length = 3;
+		over = 0;
 		//食物归位
 		fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
 		fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
@@ -830,27 +832,27 @@ void readlist()
 	putimage(0, 0, &list);
 	FILE* list;
 	int a, i, j;
-	int b[32] = { 0 };
+	int e[32] = { 0 };
 	errno_t no;
 	TCHAR s[4];
-	no = fopen_s(&list, "E:\\SnakeImage\\list.txt", "r");
+	no = fopen_s(&list, "E:\\SnakeImage\\list.txt", "a+");
 	for (i = 0; i <= 30; i++)
 	{
-		fscanf_s(list, "%d", &b[i]);
+		fscanf_s(list, "%d", &e[i]);
 	}
 	for (j = 0; j <= 30; j++)
 		for (i = 0; i <= 28; i++)
 		{
-			if (b[i] <= b[i + 1])
+			if (e[i] <= e[i + 1])
 			{
-				b[i] = b[i] ^ b[i + 1];
-				b[i + 1] = b[i] ^ b[i + 1];
-				b[i] = b[i] ^ b[i + 1];
+				e[i] = e[i] ^ e[i + 1];
+				e[i + 1] = e[i] ^ e[i + 1];
+				e[i] = e[i] ^ e[i + 1];
 			}
 		}
 	for (i = 0; i <= 9; i++)
 	{
-		a = b[i];
+		a = e[i];
 		_stprintf_s(s, _T("%d"), a);
 		settextstyle(19, 0, _T("宋体"));
 		outtextxy(450, 102 + 36 * i, s);
@@ -917,7 +919,7 @@ void save()
 	n = fopen_s(&save, "E:\\SnakeImage\\save.txt", "w");
 	
 	//啊，进去啦
-	fprintf(save, "%d %d %d %d ", score, stage, speed, go_position);
+	fprintf(save, "%d %d %d %d %d ", score, stage, speed, go_position, hard);
 	fprintf(save, "%d %d %d %d ", fd1->position_x, fd1->position_y, fd1->type, fd1->flash);
 	fprintf(save, "%d %d %d %d ", fd2->position_x, fd2->position_y, fd2->type, fd2->flash);
 	fprintf(save, "%d %d %d %d ", fd3->position_x, fd3->position_y, fd3->type, fd3->flash);
@@ -943,6 +945,7 @@ void load()
 	n = fopen_s(&save, "E:\\SnakeImage\\save.txt", "r");
 
 	//啊，进来啦, *先排除异己
+	if(over == 0)
 	{
 		p = head;
 		while (p->next)
@@ -953,7 +956,7 @@ void load()
 		}
 		free(tail);
 	}
-	fscanf_s(save, "%d %d %d %d", &score, &stage, &speed, &go_position);
+	fscanf_s(save, "%d %d %d %d %d", &score, &stage, &speed, &go_position, &hard);
 	fscanf_s(save, "%d %d %d %d ", &fd1->position_x, &fd1->position_y, &fd1->type, &fd1->flash);
 	fscanf_s(save, "%d %d %d %d ", &fd2->position_x, &fd2->position_y, &fd2->type, &fd2->flash);
 	fscanf_s(save, "%d %d %d %d ", &fd3->position_x, &fd3->position_y, &fd3->type, &fd3->flash);

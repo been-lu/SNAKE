@@ -73,6 +73,7 @@ int stage = 0;//游戏阶段
 int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;//不要了
 int perhaps = 8;//与食物生成概率有关
 int hard;//难度选择导致分数什么的
+int over = 0;//死后什么的
 int go_position = 's';//初始前进方向
 int a[5] = { 0,1,-1,0,0 };//用于地图画十字
 int b[5] = { 0,0,0,1,-1 };
