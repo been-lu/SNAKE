@@ -4,6 +4,7 @@
 #include<time.h>
 #include<conio.h>
 #include<graphics.h>
+#include"resource.h"
 
 //实际为800*600，但以20像素为一单位
 #define MAP_WIDTH 40
@@ -81,7 +82,7 @@ int b[5] = { 0,0,0,1,-1 };
 
 
 //蛇头4个方向及蛇身图片还有乱七八糟的东西
-IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done, death, degree;
+IMAGE headw, heada, heads, headd, snake, map, stop, menu0, menude, wall, done, death, degree, setstage;
 //4种食物
 IMAGE food0, food1, food2, food3;
 //剧情

@@ -2,6 +2,7 @@
 
 void start();
 void menu();
+void setst();
 void createfood(fd* food);
 void drawfood();
 void drawsnake();
@@ -42,44 +43,45 @@ void start()
 	{
 		initgraph(800, 600);
 
-		loadimage(&headw, _T("E://SnakeImage//headw.png"), 20, 20);
-		loadimage(&heada, _T("E://SnakeImage//heada.png"), 20, 20);
-		loadimage(&heads, _T("E://SnakeImage//heads.png"), 20, 20);
-		loadimage(&headd, _T("E://SnakeImage//headd.png"), 20, 20);
-		loadimage(&snake, _T("E://SnakeImage//snake.png"), 20, 20);
-		loadimage(&food0, _T("E://SnakeImage//food0.png"), 20, 20);
-		loadimage(&food1, _T("E://SnakeImage//food1.png"), 20, 20);
-		loadimage(&food2, _T("E://SnakeImage//food2.png"), 20, 20);
-		loadimage(&food3, _T("E://SnakeImage//food3.png"), 20, 20);
-		loadimage(&map, _T("E://SnakeImage//map.png"), 800, 600);
-		loadimage(&stop, _T("E://SnakeImage//stop.png"), 800, 600);
-		loadimage(&menu0, _T("E://SnakeImage//menu0.png"), 800, 600);
-		loadimage(&menude, _T("E://SnakeImage//menud.png"), 800, 600);
-		loadimage(&story00, _T("E://SnakeImage//story00.png"), 800, 600);
-		loadimage(&story01, _T("E://SnakeImage//story01.png"), 800, 600);
-		loadimage(&story1, _T("E://SnakeImage//story1.png"), 800, 600);
-		loadimage(&story2, _T("E://SnakeImage//story2.png"), 800, 600);
-		loadimage(&story3, _T("E://SnakeImage//story3.png"), 800, 600);
-		loadimage(&story4, _T("E://SnakeImage//story4.png"), 800, 600);
-		loadimage(&help0, _T("E://SnakeImage//help0.png"), 800, 600);
-		loadimage(&help1, _T("E://SnakeImage//help1.png"), 800, 600);
-		loadimage(&list, _T("E://SnakeImage//list.jpg"));
-		loadimage(&stage1, _T("E://SnakeImage//stage1.png"), 800, 600);
-		loadimage(&stage2, _T("E://SnakeImage//stage2.png"), 800, 600);
-		loadimage(&stage3, _T("E://SnakeImage//stage3.png"), 800, 600);
-		loadimage(&stage4, _T("E://SnakeImage//stage4.png"), 800, 600);
-		loadimage(&end1, _T("E://SnakeImage//end1.png"), 800, 600);
-		loadimage(&end2, _T("E://SnakeImage//end2.png"), 800, 600);
-		loadimage(&end3, _T("E://SnakeImage//end3.png"), 800, 600);
-		loadimage(&end41, _T("E://SnakeImage//end41.png"));
-		loadimage(&end42, _T("E://SnakeImage//end42.png"), 800, 600);
-		loadimage(&end5, _T("E://SnakeImage//end5.png"), 800, 600);
-		loadimage(&end61, _T("E://SnakeImage//end61.png"), 800, 600);
-		loadimage(&end62, _T("E://SnakeImage//end62.png"), 800, 600);
-		loadimage(&wall, _T("E://SnakeImage//wall.png"), 20, 20);
-		loadimage(&done, _T("E://SnakeImage//done.png"), 80, 60);
-		loadimage(&death, _T("E://SnakeImage//gameover.png"), 400, 300);
-		loadimage(&degree, _T("E://SnakeImage//degree.png"), 800, 600);
+		loadimage(&headw, _T("PNG"), MAKEINTRESOURCE(_headw), 20, 20);
+		loadimage(&heada, _T("PNG"), MAKEINTRESOURCE(_heada), 20, 20);
+		loadimage(&heads, _T("PNG"), MAKEINTRESOURCE(_heads), 20, 20);
+		loadimage(&headd, _T("PNG"), MAKEINTRESOURCE(_headd), 20, 20);
+		loadimage(&snake, _T("PNG"), MAKEINTRESOURCE(_snake), 20, 20);
+		loadimage(&food0, _T("PNG"), MAKEINTRESOURCE(_food0), 20, 20);
+		loadimage(&food1, _T("PNG"), MAKEINTRESOURCE(_food1), 20, 20);
+		loadimage(&food2, _T("PNG"), MAKEINTRESOURCE(_food2), 20, 20);
+		loadimage(&food3, _T("PNG"), MAKEINTRESOURCE(_food3), 20, 20);
+		loadimage(&map, _T("PNG"), MAKEINTRESOURCE(_map), 800, 600);
+		loadimage(&stop, _T("PNG"), MAKEINTRESOURCE(_stop), 800, 600);
+		loadimage(&menu0, _T("PNG"), MAKEINTRESOURCE(_menu0), 800, 600);
+		loadimage(&menude, _T("PNG"), MAKEINTRESOURCE(_menud), 800, 600);
+		loadimage(&story00, _T("PNG"), MAKEINTRESOURCE(_story00), 800, 600);
+		loadimage(&story01, _T("PNG"), MAKEINTRESOURCE(_story01), 800, 600);
+		loadimage(&story1, _T("PNG"), MAKEINTRESOURCE(_story1), 800, 600);
+		loadimage(&story2, _T("PNG"), MAKEINTRESOURCE(_story2), 800, 600);
+		loadimage(&story3, _T("PNG"), MAKEINTRESOURCE(_story3), 800, 600);
+		loadimage(&story4, _T("PNG"), MAKEINTRESOURCE(_story4), 800, 600);
+		loadimage(&help0, _T("PNG"), MAKEINTRESOURCE(_help0), 800, 600);
+		loadimage(&help1, _T("PNG"), MAKEINTRESOURCE(_help1), 800, 600);
+		loadimage(&list, _T("PNG"), MAKEINTRESOURCE(_list), 400, 300);
+		loadimage(&stage1, _T("PNG"), MAKEINTRESOURCE(_stage1), 800, 600);
+		loadimage(&stage2, _T("PNG"), MAKEINTRESOURCE(_stage2), 800, 600);
+		loadimage(&stage3, _T("PNG"), MAKEINTRESOURCE(_stage3), 800, 600);
+		loadimage(&stage4, _T("PNG"), MAKEINTRESOURCE(_stage4), 800, 600);
+		loadimage(&end1, _T("PNG"), MAKEINTRESOURCE(_end1), 800, 600);
+		loadimage(&end2, _T("PNG"), MAKEINTRESOURCE(_end2), 800, 600);
+		loadimage(&end3, _T("PNG"), MAKEINTRESOURCE(_end3), 800, 600);
+		loadimage(&end41, _T("PNG"), MAKEINTRESOURCE(_end41), 800, 600);
+		loadimage(&end42, _T("PNG"), MAKEINTRESOURCE(_end42), 800, 600);
+		loadimage(&end5, _T("PNG"), MAKEINTRESOURCE(_end5), 800, 600);
+		loadimage(&end61, _T("PNG"), MAKEINTRESOURCE(_end61), 800, 600);
+		loadimage(&end62, _T("PNG"), MAKEINTRESOURCE(_end62), 800, 600);
+		loadimage(&wall, _T("PNG"), MAKEINTRESOURCE(_wall), 20, 20);
+		loadimage(&done, _T("PNG"), MAKEINTRESOURCE(_done), 80, 60);
+		loadimage(&death, _T("PNG"), MAKEINTRESOURCE(_gameover), 400, 300);
+		loadimage(&degree, _T("PNG"), MAKEINTRESOURCE(_degree), 800, 600);
+		loadimage(&setstage, _T("PNG"), MAKEINTRESOURCE(_setstg), 800, 600);
 	}
 
 	//链表蛇初始化
@@ -133,11 +135,11 @@ void start()
 
 	//载入开始图片
 	{
-	loadimage(NULL, _T("E://SnakeImage//load0.jpg"), 800, 600);
+	loadimage(NULL, _T("PNG"), MAKEINTRESOURCE(_load0), 800, 600);
 	Sleep(1700);
-	loadimage(NULL, _T("E://SnakeImage//load1.jpg"), 800, 600);
+	loadimage(NULL, _T("PNG"), MAKEINTRESOURCE(_load1), 800, 600);
 	Sleep(1700);
-	loadimage(NULL, _T("E://SnakeImage//load2.png"), 800, 600);
+	loadimage(NULL, _T("PNG"), MAKEINTRESOURCE(_load2), 800, 600);
 	Sleep(1700); 
 	}
 	
@@ -219,7 +221,7 @@ void menu()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:setdegree();// storytell();
+	case 49:setdegree(); setst(); storytell();
 		draw(); run();  break;
 	case 50:readlist(); break;
 	case 51:load(); break;
@@ -243,7 +245,7 @@ void menud()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:setdegree(); restart(); break;
+	case 49:setdegree(); setst(); restart(); break;
 	case 50:readlist(); break;
 	case 51:load(); break;
 	case 52:exit(); break;
@@ -273,7 +275,31 @@ void setdegree()
 	putimage(360, 270, &done);
 	Sleep(500);
 }
-
+void setst()
+{
+	cleardevice();
+	int key;
+	putimage(0, 0, &setstage);
+	for (;;)
+	{
+		if (_kbhit)
+		{
+			key = _getch();
+			if (key == 49 || key == 50 || key == 51)
+				break;
+			else
+				continue;
+		}
+	}
+	switch (key)
+	{
+	case 49:stage = 0; break;
+	case 50:stage = 1; break;
+	case 51:stage = 2; break;
+	}
+	putimage(360, 270, &done);
+	Sleep(500);
+}
 //生成食物
 void createfood(fd*food)
 {
@@ -319,12 +345,12 @@ void createfood(fd*food)
 	if (stage >= 1)
 	{
 		for (int i = 5; i <= 25; i++)
-			if (food->position_x == 300 && food->position_y == (i * 20))
+			if (food->position_x == 15 && food->position_y == (i))
 			{
 				createfood(food); return;
 			}
 		for (int i = 5; i <= 25; i++)
-			if (food->position_y == 500 && food->position_x == (i * 20))
+			if (food->position_y == 25 && food->position_x == (i))
 			{
 				createfood(food); return;
 			}
@@ -551,7 +577,7 @@ int check()
 			if (hard == 0)score = score + 4;
 			else score = score + 5;
 			createfood(fd1); break;//基础型
-		case 1:dele(); 
+		case 1:dele();
 			if (hard == 0)score = score + 2;
 			else score = score + 3;
 			speed = speed - 5;
@@ -576,7 +602,7 @@ int check()
 			if (hard == 0)score = score + 4;
 			else score = score + 5;
 			createfood(fd2); break;
-		case 1:dele(); 
+		case 1:dele();
 			if (hard == 0)score = score + 2;
 			else score = score + 3;
 			speed = speed - 5;
@@ -601,7 +627,7 @@ int check()
 			if (hard == 0)	score = score + 4;
 			else score = score + 5;
 			createfood(fd3); break;
-		case 1:dele(); 
+		case 1: dele();
 			if (hard == 0)score = score + 2;
 			else score = score + 3;
 			speed = speed - 10;
@@ -624,7 +650,7 @@ int check()
 			if (hard == 0)score = score + 4;
 			else score = score + 5;
 			createfood(fd4); break;
-		case 1:dele(); 
+		case 1:dele();
 			if(hard==0)score = score + 2; 
 			else score = score + 3; 
 			speed = speed - 10;
@@ -699,6 +725,7 @@ int check()
 		}
 		p = p->next;
 	}
+
 	return flag;
 }
 
@@ -969,10 +996,10 @@ void save()
 	
 	//啊，进去啦
 	fprintf(save, "%d %d %d %d %d ", score, stage, speed, go_position, hard);
-	fprintf(save, "%d %d %d %d $d", fd1->position_x, fd1->position_y, fd1->type, fd1->flash, fd1->times);
-	fprintf(save, "%d %d %d %d %d", fd2->position_x, fd2->position_y, fd2->type, fd2->flash, fd2->times);
-	fprintf(save, "%d %d %d %d %d", fd3->position_x, fd3->position_y, fd3->type, fd3->flash, fd3->times);
-	fprintf(save, "%d %d %d %d %d", fd4->position_x, fd4->position_y, fd4->type, fd4->flash, fd4->times);
+	fprintf(save, "%d %d %d %d %d ", fd1->position_x, fd1->position_y, fd1->type, fd1->flash, fd1->times);
+	fprintf(save, "%d %d %d %d %d ", fd2->position_x, fd2->position_y, fd2->type, fd2->flash, fd2->times);
+	fprintf(save, "%d %d %d %d %d ", fd3->position_x, fd3->position_y, fd3->type, fd3->flash, fd3->times);
+	fprintf(save, "%d %d %d %d %d ", fd4->position_x, fd4->position_y, fd4->type, fd4->flash, fd4->times);
 
 	p = head;
 	fprintf(save, "%d ", length);
@@ -1034,5 +1061,6 @@ void load()
 	putimage(360, 270, &done);
 	Sleep(700);
 	draw();
+	Sleep(500);
 	run();
 }

@@ -1,0 +1,151 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+_degree               PNG                     "E:\\SnakeImage\\degree.png"
+
+_done                PNG                     "E:\\SnakeImage\\done.png"
+
+_end1                PNG                     "E:\\SnakeImage\\end1.png"
+
+_end2               PNG                     "E:\\SnakeImage\\end2.png"
+
+_end3                PNG                     "E:\\SnakeImage\\end3.png"
+
+_end5               PNG                     "E:\\SnakeImage\\end5.png"
+
+_end41                PNG                     "E:\\SnakeImage\\end41.png"
+
+_end42                PNG                     "E:\\SnakeImage\\end42.png"
+
+_end61                PNG                     "E:\\SnakeImage\\end61.png"
+
+_end62               PNG                     "E:\\SnakeImage\\end62.png"
+
+_food0               PNG                     "E:\\SnakeImage\\food0.png"
+
+_food1               PNG                     "E:\\SnakeImage\\food1.png"
+
+_food2               PNG                     "E:\\SnakeImage\\food2.png"
+
+_food3               PNG                     "E:\\SnakeImage\\food3.png"
+
+_gameover               PNG                     "E:\\SnakeImage\\gameover.png"
+
+_heada              PNG                     "E:\\SnakeImage\\heada.png"
+
+_headd              PNG                     "E:\\SnakeImage\\headd.png"
+
+_heads              PNG                     "E:\\SnakeImage\\heads.png"
+
+_headw               PNG                     "E:\\SnakeImage\\headw.png"
+
+_help0               PNG                     "E:\\SnakeImage\\help0.png"
+
+_help1              PNG                     "E:\\SnakeImage\\help1.png"
+
+_list               PNG                     "E:\\SnakeImage\\list.png"
+
+_load0               PNG                     "E:\\SnakeImage\\load0.png"
+
+_load1               PNG                     "E:\\SnakeImage\\load1.png"
+
+_load2              PNG                     "E:\\SnakeImage\\load2.png"
+
+_map               PNG                     "E:\\SnakeImage\\map.png"
+
+_menu0               PNG                     "E:\\SnakeImage\\menu0.png"
+
+_menud               PNG                     "E:\\SnakeImage\\menud.png"
+
+_setstg               PNG                     "E:\\SnakeImage\\setstg.png"
+
+_snake               PNG                     "E:\\SnakeImage\\snake.png"
+
+_stage1               PNG                     "E:\\SnakeImage\\stage1.png"
+
+_stage2               PNG                     "E:\\SnakeImage\\stage2.png"
+
+_stage3                PNG                     "E:\\SnakeImage\\stage3.png"
+
+_stage4               PNG                     "E:\\SnakeImage\\stage4.png"
+
+_stop               PNG                     "E:\\SnakeImage\\stop.png"
+
+_story00               PNG                     "E:\\SnakeImage\\story00.png"
+
+_story01               PNG                     "E:\\SnakeImage\\story01.png"
+
+_story1               PNG                     "E:\\SnakeImage\\story1.png"
+
+_story2               PNG                     "E:\\SnakeImage\\story2.png"
+
+_story3               PNG                     "E:\\SnakeImage\\story3.png"
+
+_story4               PNG                     "E:\\SnakeImage\\story4.png"
+
+_wall               PNG                     "E:\\SnakeImage\\wall.png"
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

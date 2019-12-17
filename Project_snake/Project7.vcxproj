@@ -125,9 +125,57 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="my.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project snake.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\SnakeImage\degree.png" />
+    <Image Include="..\..\SnakeImage\done.png" />
+    <Image Include="..\..\SnakeImage\end1.png" />
+    <Image Include="..\..\SnakeImage\end2.png" />
+    <Image Include="..\..\SnakeImage\end3.png" />
+    <Image Include="..\..\SnakeImage\end41.png" />
+    <Image Include="..\..\SnakeImage\end42.png" />
+    <Image Include="..\..\SnakeImage\end5.png" />
+    <Image Include="..\..\SnakeImage\end61.png" />
+    <Image Include="..\..\SnakeImage\end62.png" />
+    <Image Include="..\..\SnakeImage\food0.png" />
+    <Image Include="..\..\SnakeImage\food1.png" />
+    <Image Include="..\..\SnakeImage\food2.png" />
+    <Image Include="..\..\SnakeImage\food3.png" />
+    <Image Include="..\..\SnakeImage\gameover.png" />
+    <Image Include="..\..\SnakeImage\heada.png" />
+    <Image Include="..\..\SnakeImage\headd.png" />
+    <Image Include="..\..\SnakeImage\heads.png" />
+    <Image Include="..\..\SnakeImage\headw.png" />
+    <Image Include="..\..\SnakeImage\help0.png" />
+    <Image Include="..\..\SnakeImage\help1.png" />
+    <Image Include="..\..\SnakeImage\list.png" />
+    <Image Include="..\..\SnakeImage\load0.png" />
+    <Image Include="..\..\SnakeImage\load1.png" />
+    <Image Include="..\..\SnakeImage\load2.png" />
+    <Image Include="..\..\SnakeImage\map.png" />
+    <Image Include="..\..\SnakeImage\menu0.png" />
+    <Image Include="..\..\SnakeImage\menud.png" />
+    <Image Include="..\..\SnakeImage\setstg.png" />
+    <Image Include="..\..\SnakeImage\snake.png" />
+    <Image Include="..\..\SnakeImage\stage1.png" />
+    <Image Include="..\..\SnakeImage\stage2.png" />
+    <Image Include="..\..\SnakeImage\stage3.png" />
+    <Image Include="..\..\SnakeImage\stage4.png" />
+    <Image Include="..\..\SnakeImage\stop.png" />
+    <Image Include="..\..\SnakeImage\story00.png" />
+    <Image Include="..\..\SnakeImage\story01.png" />
+    <Image Include="..\..\SnakeImage\story1.png" />
+    <Image Include="..\..\SnakeImage\story2.png" />
+    <Image Include="..\..\SnakeImage\story3.png" />
+    <Image Include="..\..\SnakeImage\story4.png" />
+    <Image Include="..\..\SnakeImage\wall.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
