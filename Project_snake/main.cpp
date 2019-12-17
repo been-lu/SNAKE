@@ -88,11 +88,13 @@ void start()
 		head->pre = NULL;
 		head->position_x = 7;
 		head->position_y = 7;
+
 		head->next = (sn*)malloc(sizeof(sn));
 		p = head->next;
 		p->position_x = 7;
 		p->position_y = 6;
 		p->pre = head;
+
 		p->next = (sn*)malloc(sizeof(sn));
 		tail = p->next;
 		tail->position_x = 7;
@@ -108,10 +110,25 @@ void start()
 	//随机数种子及食物初始化
 	{
 	srand((unsigned)time(NULL));
-	fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
-	fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
-	fd3->position_x = 7; fd3->position_y = 7; fd3->type = 0;
-	fd4->position_x = 3; fd4->position_y = 7; fd4->type = 2;
+	fd1->position_x = 11; 
+	fd1->position_y = 13; 
+	fd1->type = 0; 
+	fd1->times = -1;
+
+	fd2->position_x = 4; 
+	fd2->position_y = 17; 
+	fd2->type = 1;
+	fd2->times = 10;
+
+	fd3->position_x = 7;
+	fd3->position_y = 7; 
+	fd3->type = 0; 
+	fd3->times = -1;
+
+	fd4->position_x = 3;  
+	fd4->position_y = 7; 
+	fd4->type = 2; 
+	fd3->times = -1;
 	}
 
 	//载入开始图片
@@ -126,6 +143,61 @@ void start()
 	
 	//进入开始界面
 	menu();
+}
+//重新开始
+void restart()
+{
+	score = 0;
+	stage = 0;
+
+	//初始化
+	{
+		//蛇归位
+		head = (sn*)malloc(sizeof(sn));
+		head->pre = NULL;
+		head->position_x = 7;
+		head->position_y = 7;
+		head->next = (sn*)malloc(sizeof(sn));
+		p = head->next;
+		p->position_x = 7;
+		p->position_y = 6;
+		p->pre = head;
+		p->next = (sn*)malloc(sizeof(sn));
+		tail = p->next;
+		tail->position_x = 7;
+		tail->position_y = 5;
+		tail->pre = p;
+		tail->next = NULL;
+		p = NULL;
+		length = 3;
+		over = 0;
+		go_position = 's';
+		//食物归位
+		fd1->position_x = 11;
+		fd1->position_y = 13; 
+		fd1->type = 0;
+		fd1->times = -1;
+
+		fd2->position_x = 4; 
+		fd2->position_y = 17; 
+		fd2->type = 1; 
+		fd2->times = 10;
+
+		fd3->position_x = 7;  
+		fd3->position_y = 7;  
+		fd3->type = 0; 
+		fd3->times = -1;
+
+		fd4->position_x = 3;
+		fd4->position_y = 7;
+		fd4->type = 2;
+		fd4->times = -1;
+	}
+
+	//跑起来
+	draw();
+	run();
+
 }
 
 //选择菜单
@@ -147,7 +219,7 @@ void menu()
 	cleardevice();
 	switch (choose)
 	{
-	case 49:setdegree(); storytell();
+	case 49:setdegree();// storytell();
 		draw(); run();  break;
 	case 50:readlist(); break;
 	case 51:load(); break;
@@ -215,6 +287,11 @@ void createfood(fd*food)
 		food->flash = 0;
 	else
 		food->flash = -1;
+
+	if (food->type == 1)
+		food->times = 10;
+	else
+		food->times = -1;
 	//检查食物会不会被分数挡住
 	if (food->position_x <= 3 && food->position_y == 0)
 	{
@@ -325,7 +402,9 @@ void drawfood()
 	case 1:
 		if (fd1->flash == 0)
 		{
-			putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food1); fd1->flash = 1;
+			putimage((fd1->position_x * 20), (fd1->position_y) * 20, &food1); fd1->flash = 1; fd1->times--;
+			if (fd1->times == 0)
+				createfood(fd1);
 		}
 		else
 			fd1->flash = 0;
@@ -341,7 +420,8 @@ void drawfood()
 	case 1:
 		if (fd2->flash == 0)
 		{
-			putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food1); fd2->flash = 1;
+			putimage((fd2->position_x * 20), (fd2->position_y) * 20, &food1); fd2->flash = 1; fd2->times--;
+			if (fd2->times == 0)createfood(fd2);
 		}
 		else
 			fd2->flash = 0;
@@ -357,7 +437,8 @@ void drawfood()
 	case 1:
 		if (fd3->flash == 0)
 		{
-			putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food1); fd3->flash = 1;
+			putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food1); fd3->flash = 1; fd3->times--;
+			if (fd3->times == 0)createfood(fd3);
 		}
 		else
 			fd3->flash = 0;
@@ -365,13 +446,15 @@ void drawfood()
 	case 2:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food2); break;
 	case 3:putimage((fd3->position_x * 20), (fd3->position_y) * 20, &food3); break;
 	}
+	
 	switch (fd4->type)
 	{
 	case 0:putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food0); break;
 	case 1:
 		if (fd4->flash == 0)
 		{
-			putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food1); fd4->flash = 1;
+			putimage((fd4->position_x * 20), (fd4->position_y) * 20, &food1); fd4->flash = 1; fd4->times--;
+			if (fd4->times == 0)createfood(fd4);
 		}
 		else
 			fd4->flash = 0;
@@ -424,6 +507,8 @@ void draw()
 	drawfood();
 	drawsnake();
 	drawwall();
+	
+	//左上角打印分数
 	outtextxy(0, 0,"Score:");
 	c[2] = score % 10 + 48;
 	c[1] = (score / 10) % 10 + 48;
@@ -722,46 +807,6 @@ void exit()
 	Sleep(10);
 }
 
-//重新开始
-void restart()
-{
-	score = 0;
-	stage = 0;
-	go_position = 's';
-	//初始化
-	{
-		//蛇归位
-		head = (sn*)malloc(sizeof(sn));
-		head->pre = NULL;
-		head->position_x = 7;
-		head->position_y = 7;
-		head->next = (sn*)malloc(sizeof(sn));
-		p = head->next;
-		p->position_x = 7;
-		p->position_y = 6;
-		p->pre = head;
-		p->next = (sn*)malloc(sizeof(sn));
-		tail = p->next;
-		tail->position_x = 7;
-		tail->position_y = 5;
-		tail->pre = p;
-		tail->next = NULL;
-		p = NULL;
-		length = 3;
-		over = 0;
-		//食物归位
-		fd1->position_x = 11; fd1->position_y = 13; fd1->type = 0;
-		fd2->position_x = 4; fd2->position_y = 17; fd2->type = 1;
-		fd3->position_x = 7; fd3->position_y = 7; fd3->type = 0;
-		fd4->position_x = 3; fd4->position_y = 7; fd4->type = 2;
-	}
-
-	//跑起来
-	draw();
-	run();
-
-}
-
 //故事
 void storytell()
 {
@@ -840,6 +885,7 @@ void readlist()
 	{
 		fscanf_s(list, "%d", &e[i]);
 	}
+
 	for (j = 0; j <= 30; j++)
 		for (i = 0; i <= 28; i++)
 		{
@@ -850,6 +896,7 @@ void readlist()
 				e[i] = e[i] ^ e[i + 1];
 			}
 		}
+
 	for (i = 0; i <= 9; i++)
 	{
 		a = e[i];
@@ -857,7 +904,9 @@ void readlist()
 		settextstyle(19, 0, _T("宋体"));
 		outtextxy(450, 102 + 36 * i, s);
 	}
+
 	fclose(list);
+
 	system("pause");
 	menu();
 }
@@ -920,10 +969,10 @@ void save()
 	
 	//啊，进去啦
 	fprintf(save, "%d %d %d %d %d ", score, stage, speed, go_position, hard);
-	fprintf(save, "%d %d %d %d ", fd1->position_x, fd1->position_y, fd1->type, fd1->flash);
-	fprintf(save, "%d %d %d %d ", fd2->position_x, fd2->position_y, fd2->type, fd2->flash);
-	fprintf(save, "%d %d %d %d ", fd3->position_x, fd3->position_y, fd3->type, fd3->flash);
-	fprintf(save, "%d %d %d %d ", fd4->position_x, fd4->position_y, fd4->type, fd4->flash);
+	fprintf(save, "%d %d %d %d $d", fd1->position_x, fd1->position_y, fd1->type, fd1->flash, fd1->times);
+	fprintf(save, "%d %d %d %d %d", fd2->position_x, fd2->position_y, fd2->type, fd2->flash, fd2->times);
+	fprintf(save, "%d %d %d %d %d", fd3->position_x, fd3->position_y, fd3->type, fd3->flash, fd3->times);
+	fprintf(save, "%d %d %d %d %d", fd4->position_x, fd4->position_y, fd4->type, fd4->flash, fd4->times);
 
 	p = head;
 	fprintf(save, "%d ", length);
@@ -936,7 +985,8 @@ void save()
 	fclose(save);
 
 	putimage(360, 270, &done);
-	Sleep(100);
+	Sleep(500);
+	putimage(0, 0, &stop);
 }
 void load()
 {
@@ -956,12 +1006,14 @@ void load()
 		}
 		free(tail);
 	}
+
 	fscanf_s(save, "%d %d %d %d %d", &score, &stage, &speed, &go_position, &hard);
-	fscanf_s(save, "%d %d %d %d ", &fd1->position_x, &fd1->position_y, &fd1->type, &fd1->flash);
-	fscanf_s(save, "%d %d %d %d ", &fd2->position_x, &fd2->position_y, &fd2->type, &fd2->flash);
-	fscanf_s(save, "%d %d %d %d ", &fd3->position_x, &fd3->position_y, &fd3->type, &fd3->flash);
-	fscanf_s(save, "%d %d %d %d ", &fd4->position_x, &fd4->position_y, &fd4->type, &fd4->flash);
+	fscanf_s(save, "%d %d %d %d %d", &fd1->position_x, &fd1->position_y, &fd1->type, &fd1->flash, &fd1->times);
+	fscanf_s(save, "%d %d %d %d %d", &fd2->position_x, &fd2->position_y, &fd2->type, &fd2->flash, &fd2->times);
+	fscanf_s(save, "%d %d %d %d %d", &fd3->position_x, &fd3->position_y, &fd3->type, &fd3->flash, &fd3->times);
+	fscanf_s(save, "%d %d %d %d %d", &fd4->position_x, &fd4->position_y, &fd4->type, &fd4->flash, &fd4->times);
 	fscanf_s(save, "%d", &length);
+
 	head = (sn*)malloc(sizeof(sn));
 	p = head;
 	q = NULL;

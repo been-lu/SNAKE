@@ -56,6 +56,7 @@ typedef struct
 	//食物种类 0为基础型，1为毒草，2为地雷，3为特效草
 	int type;
 	int flash;//用于毒草闪烁
+	int times;
 }fd;
 
 //4个食物开局结为基础食物且进入新阶段时只会隐藏而不是释放空间

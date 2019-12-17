@@ -1,3 +1,5 @@
 ﻿  main.cpp
 E:\1st_repository\Project_snake\main.cpp(187,7): warning C4551: 缺少参数列表的函数调用
+E:\1st_repository\Project_snake\main.cpp(934,94): warning C4474: fprintf: 格式字符串中传递的参数太多
+E:\1st_repository\Project_snake\main.cpp(934,94): message : 占位符和其参数预计 4 可变参数，但提供的却是 5 参数
   Project7.vcxproj -> E:\1st_repository\Project_snake\Debug\Project snake.exe
