@@ -205,8 +205,8 @@ void setdegree()
 //生成食物
 void createfood(fd*food)
 {
-	food->position_x = rand() % (MAP_WIDTH );
-	food->position_y = rand() % (MAP_LENGTH );
+	food->position_x = rand() % (MAP_WIDTH -1);
+	food->position_y = rand() % (MAP_LENGTH -1);
 	food->type = rand() % (perhaps);
 	if (food->type >= 4)
 		food->type = 0;
