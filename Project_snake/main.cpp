@@ -1,18 +1,28 @@
 #include"my.h"
 
+//开始及重新来过
 void start();
+void restart();
+//选择菜单
 void menu();
+void menud();
 void setst();
+void setdegree();
+//食物生成
 void createfood(fd* food);
+//画图
 void drawfood();
+void drawwall();
 void drawsnake();
 void draw();
+//暂停
+void pause();
 void keyboard();
 void gameover();
 void run();
 void exit();
 int check();
-void restart();
+
 void setdegree();
 //应该有个故事
 void storytell();
